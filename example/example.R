@@ -20,23 +20,23 @@ patterns <- as.character(read.table(paste(path, "/patterns.txt", sep=''))$V1)
 
 
 
-rbrick <- LuccPL::create_brick(path=path)
+mt15cl <- LuccPL::create_brick(path=path)
 
 
-LuccPL::plot_input(rbrick,dates,patterns,colors)
+LuccPL::plot_input(mt15cl,dates,patterns,colors)
 
 
-export_brick(rbrick, brickpath)
+export_brick(mt15cl, brickpath)
 
 
-rbrick <- ste.import_brick(brickpath)
+mt15cl <- import_brick(brickpath)
 
 
 system.time({ 
-  rout <- event(rbrick, query_array) 
+  mtout <- event(mt15cl, query_array) 
 })
 
-plot_result(rout,dates)
+plot_result(mtout,dates)
 
 
 

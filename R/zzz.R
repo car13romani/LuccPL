@@ -1,5 +1,13 @@
-".First.lib" <- function(lib, pkg)  
-{  
-  library.dynam("lucc_process", package = Lucc_PL, lib.loc = lib)  
-  return(invisible(0))  
-}
+#.onLoad <- function(lib, pkg)  
+#{  
+#  library.dynam("LuccPL", package = "LuccPL", lib.loc = "/src") #, lib.loc = lib)  
+#}
+
+#library.dynam(chname, package, lib.loc,
+#              verbose = getOption("verbose"),
+#              file.ext = .Platform$dynlib.ext
+              
+#              library.dynam()
+              
+
+#tempdir()
