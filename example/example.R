@@ -13,7 +13,7 @@ query_array <- array(c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,  #relations before,after
 
 
 dates <- as.character(read.table(paste(path, "/dates.txt", sep=''))$V1)
-col <- as.character(read.table(paste(path, "/colors.txt", sep=''))$V1)
+colors <- as.character(read.table(paste(path, "/colors.txt", sep=''))$V1)
 patterns <- as.character(read.table(paste(path, "/patterns.txt", sep=''))$V1)
 
 
@@ -25,18 +25,17 @@ mt15cl <- LuccPL::create_brick(path=path)
 
 LuccPL::plot_input(mt15cl,dates,patterns,colors)
 
+LuccPL::export_brick(mt15cl, brickpath)
 
-export_brick(mt15cl, brickpath)
 
-
-mt15cl <- import_brick(brickpath)
+mt15cl <- LuccPL::import_brick(brickpath)
 
 
 system.time({ 
-  mtout <- event(mt15cl, query_array) 
+  mtout <- LuccPL::event(mt15cl, query_array) 
 })
 
-plot_result(mtout,dates)
+LuccPL::plot_output(mtout,dates)
 
 
 
