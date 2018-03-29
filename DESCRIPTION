@@ -1,0 +1,18 @@
+Package: LuccPL
+Title: Processing and analisys language for land use and cover changes
+Version: 0.0.0.9000
+Authors@R: person("Carlos", "Romani", email = "car13romani@gmail.com", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+Depends: R (>= 3.4.3)
+License: GNU-3
+Encoding: UTF-8
+LazyData: true
+Imports: parallel,
+    raster,
+    rgdal,
+    rasterVis
+RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
