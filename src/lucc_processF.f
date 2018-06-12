@@ -27,13 +27,18 @@ C
 
       SUBROUTINE lucc_process(SB, ST, NR, BI, BO, QA)
 
-      INTEGER SB, ST, NR, I, J, R, L, BI(ST,SB), BO(ST,SB), QA(NR,5), CO, KO, TI, STOP_TS
+      INTEGER SB, ST, NR, I, J, R, L, BI(ST,SB), BO(ST,SB), QA(NR,6), CO, KO, TI, STOP_TS
       STOP_TS = 0
       CO = 0
       KO = 0
 C     For all block
       DO 50 L = 1, SB
         DO 40 R = 1, NR
+
+
+
+
+
 
 
 
@@ -54,6 +59,11 @@ C     Individual processing
             ENDIF
           ENDIF
           
+
+
+
+
+
 
 
 
@@ -82,6 +92,12 @@ C     2. MEETS --------------------------------------------
             ENDIF
           ENDIF
 
+
+
+
+
+
+
 C     3. MEEBY -------------------------------------------
           IF (QA(R,1).EQ.3) THEN
             CO = 0
@@ -108,6 +124,11 @@ C     3. MEEBY -------------------------------------------
           ENDIF
 
 
+
+
+
+
+
 C     4. HOLDS ----------------------------------
           IF (QA(R,1).EQ.4) THEN
             CO = 0
@@ -129,6 +150,10 @@ C     4. HOLDS ----------------------------------
               GOTO 50
             ENDIF
           ENDIF
+
+
+
+
 
 
 C     5. RECUR ----------------------------------
@@ -162,27 +187,36 @@ C     5. RECUR ----------------------------------
           ENDIF
 
 
+
+
+
 C     6. CONVERT ----------------------------------
           IF (QA(R,1).EQ.6) THEN
             CO = 0
-            DO 36 I = 0, (QA(R,2)-1) 
-              IF (BI(I,L).EQ.QA(R,4)) THEN
-                BO(I,L) = 1
-                CO = CO + 1
-              ENDIF
-   36       CONTINUE
-            PRINT*, "CO = ", CO
-            IF (CO.GT.0) THEN
-              CO = 0
-              DO 37 J = (QA(R,3)+1), ST
-                IF (BI(J,L).EQ.QA(R,4)) THEN
-                  PRINT*, "J = ", J
-                  BO(J,L) = 1
-                  CO = CO + 1
+            IF (BI(QA(R,2)+1,L).EQ.(QA(R,5))) THEN
+              IF (BI(QA(R,2),L).EQ.(QA(R,4))) THEN
+                IF (BI(QA(R,2)-1,L).EQ.(QA(R,4))) THEN
+                  BO(QA(R,2),L) = 1
+                  BO((QA(R,2)-1),L) = 1
+                  BO((QA(R,2)+1),L) = 1
+                  CO = CO + 3
+                  DO 36 I = (QA(R,2)-2), 0, -1
+                    IF (BI(I,L).EQ.QA(R,4)) THEN
+                      BO(I,L) = 1
+                      CO = CO + 1
+                    ELSE
+                      EXIT
+                    ENDIF
+   36             CONTINUE
+   				  DO 37 I = (QA(R,2)+2), ST
+                    IF (BI(I,L).EQ.QA(R,5)) THEN
+                      BO(I,L) = 1
+                      CO = CO + 1
+                    ELSE
+                      EXIT
+                    ENDIF
+   37             CONTINUE
                 ENDIF
-   37         CONTINUE
-              IF (CO.EQ.0) THEN
-                CALL clean_ts(1,ST,BO( : ,L))
               ENDIF
             ENDIF
             call and_or(CO,KO,QA(R,6),ST,BO( : ,L),STOP_TS)
@@ -191,6 +225,50 @@ C     6. CONVERT ----------------------------------
               GOTO 50
             ENDIF
           ENDIF
+
+
+
+
+
+
+
+C     7. EVOLVE ----------------------------------
+		  IF (QA(R,1).EQ.7) THEN
+            CO = 0
+            DO 38 I = (QA(R,2)), 0, -1
+              IF (BI(I,L).EQ.QA(R,4)) THEN
+                BO(I,L) = 1
+                CO = CO + 1
+              ENDIF
+   38       CONTINUE
+   			IF (CO.GT.0) THEN
+   			  CO = 0
+   			  DO 39 I = (QA(R,3)), ST
+                IF (BI(I,L).EQ.QA(R,5)) THEN
+                  BO(I,L) = 1
+                  CO = CO + 1
+                ENDIF
+   39         CONTINUE
+            ENDIF
+            call and_or(CO,KO,QA(R,6),ST,BO( : ,L),STOP_TS)
+            IF (STOP_TS.EQ.1) THEN
+              STOP_TS = 0
+              GOTO 50
+            ENDIF
+          ENDIF
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
