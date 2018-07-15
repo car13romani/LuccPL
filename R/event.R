@@ -71,7 +71,7 @@ event <- function(rbrick, query_array){
       
       return(out_aux)
       
-    },  mc.cores = parallel::detectCores())
+    },  mc.cores = parallel::detectCores()-1)
   
     out1 <- unlist(out)
     
