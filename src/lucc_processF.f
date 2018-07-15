@@ -165,12 +165,12 @@ C     5. RECUR ----------------------------------
                 CO = CO + 1
               ENDIF
    34       CONTINUE
-            PRINT*, "CO = ", CO
+c            PRINT*, "CO = ", CO
             IF (CO.GT.0) THEN
               CO = 0
               DO 35 J = (QA(R,3)+1), ST
                 IF (BI(J,L).EQ.QA(R,4)) THEN
-                  PRINT*, "J = ", J
+c                  PRINT*, "J = ", J
                   BO(J,L) = 1
                   CO = CO + 1
                 ENDIF
@@ -287,7 +287,7 @@ C     7. EVOLVE ----------------------------------
 
       SUBROUTINE clean_ts(S_ST,E_ST,TS)
         INTEGER S_ST, E_ST, TS(E_ST)
-        PRINT*, "CLEAN TS", S_ST
+c        PRINT*, "CLEAN TS", S_ST
         DO 10 J = S_ST, E_ST
           TS(J) = 0
    10   CONTINUE
@@ -296,11 +296,11 @@ C     7. EVOLVE ----------------------------------
 
       SUBROUTINE and_or(CO,KO,QA,ST,TS,STOP_TS)
         INTEGER CO, KO, QA, ST, TS(ST)
-        PRINT*, "AND OR ANALISYS"
-        PRINT*, "CO = ", CO
-        PRINT*, "KO = ", KO
-        PRINT*, "QAR5 = ", QA
-        PRINT*
+c        PRINT*, "AND OR ANALISYS"
+c        PRINT*, "CO = ", CO
+c        PRINT*, "KO = ", KO
+c        PRINT*, "QAR5 = ", QA
+c        PRINT*
 
 c           AND/OR analisys
             IF (CO.EQ.0) THEN
