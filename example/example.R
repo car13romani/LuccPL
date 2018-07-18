@@ -2,15 +2,25 @@ install.packages('package_name', dependencies=TRUE, repos='http://cran.rstudio.c
 
 
 
-brickpath <- "/home/carlos/DADOS_MESTRADO/classified_MT_15/bricktest.tif"
 path <- "/home/carlos/DADOS_MESTRADO/classified_MT_15/recorte2/"
+
+path1 <- c("/home/carlos/DADOS_MESTRADO/classified_MT_15/recorte1/",
+                 "/home/carlos/DADOS_MESTRADO/classified_MT_15/recorte2/",
+                 "/home/carlos/DADOS_MESTRADO/classified_MT_15/recorte3/")
+
+path_title <- c("Recorte_1","Recorte_2","Recorte_3")
+
+
+
+shinyApp(ui = ui, server = server)
+
 
 # path
 #   |_ metadata.txt
 #   |_ dates.txt
 #   |_ colors.txt
 
-
+brickpath <- paste(path, "bricktest.tif", sep='')
 dates <- as.character(read.table(paste(path, "/dates.txt", sep=''))$V1)
 colors <- as.character(read.table(paste(path, "/colors.txt", sep=''))$V1)
 metadata <- as.character(read.table(paste(path, "/metadata.txt", sep=''))$V1)
@@ -56,6 +66,14 @@ mt_out <- query(mt15cl, FUN_list = c(
 
 
 
+
+eval(parse(text="5+3"))
+
+query1 <- c(
+  LuccPL::meets("Forest",2008),
+  "and",
+  LuccPL::metby(c("Pasture_1","Pasture_2"), 2008) 
+)
 
 
 query(mt15cl, FUN_list = c(
