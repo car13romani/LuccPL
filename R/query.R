@@ -58,9 +58,11 @@ query <- function(input_dc, FUN_list, result_type = "bool_cube") {
     
     dim(FUN_list) <- c(6,(length(FUN_list)/6))
     query_array <- t(FUN_list)
-    print(query_array)
+    #print(query_array)
     # fuction to process data cube and return query result
-
+    
+    return(query_array)
+    
      ########### return(LuccPL::event(input_dc, query_array))
 
   }
@@ -74,6 +76,5 @@ query <- function(input_dc, FUN_list, result_type = "bool_cube") {
   
   
 }
-
 
 
