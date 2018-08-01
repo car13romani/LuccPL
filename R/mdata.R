@@ -35,3 +35,18 @@ and_or_bool <- function(connector_list, n_relations){
   }
   return(ao_out)
 }
+
+
+# function to format many patterns to parse
+format1 <- function(x){
+  out <- NULL
+  if(length(x) == 1) return(paste0("'",x,"'"))
+  else {
+    for (i in 1:(length(x)-1)) {
+      out <- paste0(out,"'",x[i],"',")
+    }
+    out <- paste0(out,"'",x[length(x)],"'")
+    return(out)
+  }
+}
+
