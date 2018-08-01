@@ -2,13 +2,18 @@ install.packages('package_name', dependencies=TRUE, repos='http://cran.rstudio.c
 
 
 
-path <- "/home/carlos/DADOS_MESTRADO/classified_MT_15/recorte2/"
+path <- "/home/carlos/DADOS_MESTRADO/classified_MT_15/recorte3"
 
-path1 <- c("/home/carlos/DADOS_MESTRADO/classified_MT_15/recorte1/",
-                 "/home/carlos/DADOS_MESTRADO/classified_MT_15/recorte2/",
-                 "/home/carlos/DADOS_MESTRADO/classified_MT_15/recorte3/")
+brickpath <- paste0(path, "bricktest.tif")
+dates <- as.character(read.table(paste0(path, "/dates.txt"))$V1)
+colors <- as.character(read.table(paste0(path, "/colors.txt"))$V1)
+metadata <- as.character(read.table(paste0(path, "/metadata.txt"))$V1)
 
-path_title <- c("Recorte_1","Recorte_2","Recorte_3")
+
+mt15cl <- LuccPL::import_brick(brickpath)
+
+plot_input()
+plot_input(rteste[[1]], dates, metadata, colors)
 
 
 
@@ -20,11 +25,39 @@ shinyApp(ui = ui, server = server)
 #   |_ dates.txt
 #   |_ colors.txt
 
-brickpath <- paste(path, "bricktest.tif", sep='')
-dates <- as.character(read.table(paste(path, "/dates.txt", sep=''))$V1)
-colors <- as.character(read.table(paste(path, "/colors.txt", sep=''))$V1)
-metadata <- as.character(read.table(paste(path, "/metadata.txt", sep=''))$V1)
 
+
+
+
+library(raster)
+library(rasterVis)
+
+
+jpeg(file = paste0(path,"/jpeg/plotOut1.jpeg"), bg = "transparent", height=nrow(rteste[[1]]), width=ncol(rteste[[1]]))
+rasterVis::levelplot(rteste[[1]], col.regions=colors,  contour=F, margin=F, scales = list(draw=FALSE), colorkey=NULL,
+                     par.settings = list(axis.line = list(line=0), mar=c(0,0,0,0), omi=c(0,0,0,0), 
+                                          xaxt='n', yaxt='n', bg='transparent'))
+dev.off()
+
+
+
+
+
+
+
+
+
+
+rasterVis::levelplot(rteste[[1]], col.regions=colors)
+
+?levelplot
+writeJPEG(image = rasterVis::levelplot(rteste[[1]], col.regions=colors), target = "testye111.jpeg", color.space = colors)
+
+magick::image_write(rteste[[1]], path = "tiger.jpeg", format = "jpeg")
+
+library(magick)
+plot(rteste[[1]])
+?raster::plot()
 
 mt15cl <- LuccPL::create_brick(path=path)
 
@@ -33,16 +66,8 @@ LuccPL::plot_input(mt15cl,dates,patterns,colors)
 LuccPL::export_brick(mt15cl, brickpath)
 
 
-mt15cl <- LuccPL::import_brick(brickpath)
-
 
 query_array <- LuccPL::before("Pasture_2",2008)
-
-
-
-
-# size query array
-
 
 
 system.time({ 
@@ -51,11 +76,6 @@ system.time({
 
 LuccPL::plot_output(mt_out,dates)
 
-
-
-
-
-
 rm(mt_out)
 # example of query
 mt_out <- query(mt15cl, FUN_list = c(
@@ -63,9 +83,6 @@ mt_out <- query(mt15cl, FUN_list = c(
   "and",
   after(c("Pasture_1","Pasture_2"), 2008) 
 ))
-
-
-
 
 eval(parse(text="5+3"))
 
@@ -157,7 +174,6 @@ query_array <- array(c(3,  #relations before,after
                        6,  #patterns 1,3
                        0,
                        0), c(1,6))  #union_op 1=or, 0=and
-
 
 query_array <- array(c(4,  #relations before,after
                        8, #years init 4,5
