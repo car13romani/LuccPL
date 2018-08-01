@@ -6,11 +6,11 @@
 ##       National Institute for Space Research (INPE), Brazil  ##
 ##                                                             ##
 ##                                                             ##
-##   R script with relationships of ste query language         ##
+##       R script                                  ##
 ##                                                             ##
 ##                                             2018-03-29      ##
 ##                                                             ##
-##    Work based on lucc from Adeline Marinho                  ##
+##            Land Use and Cover Data Analysis                 ##
 ##                                                             ##
 ##                                                             ##
 #################################################################
@@ -24,11 +24,12 @@
 #' 
 #' @usage 
 #' 
-#' @param pattern_list1 pattern or listalist of land use
-#' @param pattern_list2 pattern or listalist of land use
+#' @param pattern_list1 list of land use types
+#' @param pattern_list2 list of land use types
 #' @param date1 start date
 #' @param date2 end date
-#' @param ... dates = list of time_step dates (definir o tipo de entrada); metadata = list of land use types according of raster digital number
+#' @param dates list of dates for each time-step
+#' @param metadata list of land use types according of raster digital number
 #' 
 #' @return
 #' @export evolve
@@ -36,19 +37,16 @@
 #' @import
 #' 
 
-#####  TRATAR O PROBLEMA DAS DATAS (LUBRIDATE)
+ 
 
 # CASO ESPECIAL NxM
-evolve <- function(pattern_list1, pattern_list2, date1, date2, ...) {  # date2 optional (ARRUMAR ISSO)
+evolve <- function(pattern_list1, pattern_list2, date1, date2, dates, metadata) {  # date2 optional (ARRUMAR ISSO)
   and_or <- NULL
-  # pattern or list of pattern to que query
-  if(!is.character(pattern_list1)) stop("Pattern is not a string!")
   
-  if(length(pattern_list1) == 1 && length(pattern_list1) == 1) and_or <- 0
+  if(length(pattern_list1) == 1 && length(pattern_list2) == 1) and_or <- 0
   else {
-    
-    # or for all connections except the last
-    and_or[1:((length(pattern_list1))*(length(pattern_list2)))] <- 1  
+   # or for all connections except the last
+    and_or[1:((length(pattern_list1))*(length(pattern_list2))-1)] <- 1  
     and_or[((length(pattern_list1))*(length(pattern_list2)))] <- 0
   }
   
@@ -56,29 +54,20 @@ evolve <- function(pattern_list1, pattern_list2, date1, date2, ...) {  # date2 o
   date1[1:length(pattern_list1)] <- date1
   date2[1:length(pattern_list2)] <- date2
   
-  # optional arguments (default must be declared in the project path)
-  argnames <- names(list(...))
-  if(!("dates" %in% argnames)){
-    dates <- as.character(read.table(paste(path, "/dates.txt", sep=''))$V1)
-  }
-  if(!("metadata" %in% argnames)){
-    metadata <- as.character(read.table(paste(path, "/metadata.txt", sep=''))$V1)
-  }
-  
-  # establishes the relationship between the land use type and the digital number in the classifications
+  # establishes the relationship between land use type and digital number in the classifications
   pattern_number1 <- mdata(pattern_list1, metadata)
   pattern_number2 <- mdata(pattern_list2, metadata)
   
-  #establishes the relationship between the date and the time step of each classification
+  # establishes the relationship between date and time-step of each classification
   time_step1 <- tdata(date1, dates)
   time_step2 <- tdata(date2, dates)
   
   
   query_array <- NULL
   for(i in 1:length(pattern_list1)){
-    for(i in 1:length(pattern_list2)){
+    for(j in 1:length(pattern_list2)){
       # for each pattern of land use a column is created in the query_array
-      query_array <- c(query_array, 6, time_step1[i], time_step2[i], pattern_number1[i], pattern_number2[i], and_or[i])
+      query_array <- c(query_array, 7, time_step1[i], time_step2[j], pattern_number1[i], pattern_number2[j], and_or[i+j])
     }
   }
   
