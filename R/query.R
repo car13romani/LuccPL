@@ -6,11 +6,11 @@
 ##       National Institute for Space Research (INPE), Brazil  ##
 ##                                                             ##
 ##                                                             ##
-##   R script with relationships of ste query language         ##
+##       R script                                  ##
 ##                                                             ##
 ##                                             2018-03-29      ##
 ##                                                             ##
-##    Work based on lucc from Adeline Marinho                  ##
+##            Land Use and Cover Data Analysis                 ##
 ##                                                             ##
 ##                                                             ##
 #################################################################
