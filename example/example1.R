@@ -1,29 +1,19 @@
-library(jpeg)
-library(shiny)
-library(shinyFiles)
-source("R/server.R")
-source("R/ui.R")
+
+
+lst <- list.files(path=path,pattern='.tif$',full.names=TRUE)
+# stack creation
+rstack <- raster::stack(lst)
+# brick creation
+print('Making brick')
+a <- raster::brick(rstack,  progress = "text", datatype='INT4S')
 
 
 
-
-
-
-
-path <- "/home/carlos/DADOS_MESTRADO/classified_MT_15/recorte3/stInput.tif"
-
-
-
-shinyApp(ui = ui, server = server)
-
-
+path <- "/home/carlos/DADOS_MESTRADO/classified_MT_15/recorte3/"
 
 shiny::withProgress()
 
-
-
 dataPath <- strsplit(x=path, split = "stBrick.tif")
-
 
 rteste <- import_brick(path)
 
@@ -48,14 +38,8 @@ function(input, output) {
   # The content function is passed a filename as an argument, and
   #   it should write out data to that filename.
   
-  
-  
   jpeg::writeJPEG()
-  
-  
-  
-  
-  
+
   output$downloadData <- downloadHandler(
     
     # This function returns a string which tells the client
@@ -74,9 +58,19 @@ function(input, output) {
                   row.names = FALSE)
     }
   )
-  
-  
-  
-  
-  
 }
+
+
+
+
+
+
+pracma::tic("Process")
+a = 0
+for(i in 100000000){ a <- a+ 1}
+t <- pracma::toc("Process")
+#print(paste("Processed in:", (end.time-start.time), "seconds"))
+showNotification(paste("Processed in:", as.numeric(t[1])-as.numeric(t$tic), "seconds"), duration = NULL)
+t
+as.numeric(t)
+

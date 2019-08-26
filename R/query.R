@@ -51,7 +51,7 @@ query <- function(input_dc, FUN_list, result_type = "bool_cube") {
       FUN_list <- FUN_list[-which("or" == FUN_list)]
     } 
     FUN_list <- as.integer(FUN_list)
-  
+    
     #return(FUN_list)
     
     # format query_array
@@ -63,8 +63,8 @@ query <- function(input_dc, FUN_list, result_type = "bool_cube") {
     
     return(query_array)
     
-     ########### return(LuccPL::event(input_dc, query_array))
-
+    ########### return(LuccPL::event(input_dc, query_array))
+    
   }
   
   # 2. To the "bool_surface"

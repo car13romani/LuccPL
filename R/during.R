@@ -16,8 +16,8 @@
 #################################################################
 
 
-#' @title after
-#' @name after
+#' @title during
+#' @name during
 #' @author Carlos Alexandre Romani
 #'
 #' @description Analysis 
@@ -42,12 +42,14 @@
 
 
 
-after <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date2 = NULL, dates = NULL, metadata = NULL) {
+during <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date2 = NULL, dates = NULL, metadata = NULL) {
   and_or <- NULL
   ensurer::ensure_that(pattern_list1, !is.null(pattern_list1),
                        err_desc = "pattern_list1, must be defined!")
   ensurer::ensure_that(date1, !is.null(date1),
                        err_desc = "date1, must be defined!")
+  ensurer::ensure_that(date2, !is.null(date2),
+                       err_desc = "date2, must be defined!")
   ensurer::ensure_that(dates, !is.null(dates),
                        err_desc = "dates, must be defined!")
   ensurer::ensure_that(metadata, !is.null(metadata),
@@ -64,21 +66,21 @@ after <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date
   }
   
   date1[1:length(pattern_list1)] <- date1
-  
+  date2[1:length(pattern_list1)] <- date2
   # establishes the relationship between land use type and digital number in the classifications
   pattern_number1 <- mdata(pattern_list1, metadata)
   
   # establishes the relationship between date and time-step of each classification
-  time_step_number <- tdata(date1, dates)
+  time_step_number1 <- tdata(date1, dates)
+  time_step_number2 <- tdata(date2, dates)
   
   
   query_array <- NULL
   for(i in 1:length(pattern_list1)){
     # for each pattern of land use a column is created in the query_array
-    query_array <- c(query_array, 1, time_step_number[i], (length(dates)+1), pattern_number1[i], 0, and_or[i])
+    query_array <- c(query_array, 1, time_step_number1[i], time_step_number2[i], pattern_number1[i], 0, and_or[i])
   }
   
   return(query_array)
 }
-
 

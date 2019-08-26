@@ -39,6 +39,12 @@
 # search LUCC event
 event <- function(rbrick, query_array){
   # case rbrick is a path of raster brick .tif
+  
+  ensurer::ensure_that(rbrick, !is.null(rbrick),
+                       err_desc = "Define a valid rbrick input.")
+  ensurer::ensure_that(query_array, !is.null(query_array),
+                       err_desc = "Define a valid query_array.")
+  
   if(typeof(rbrick) == "character"){
     rbrick <- raster::brick(rbrick, progress = "text")
   }
@@ -46,21 +52,25 @@ event <- function(rbrick, query_array){
   # import rbrick
   if(typeof(rbrick) == "S4"){
     
-    sizeblock <- rbrick@ncols
+    #sizeblock <- n_rows*rbrick@ncols
     sizets <- dim(rbrick)[3]
     
-    nrelations <- dim(query_array)[1]
+    
+    nblocks <- rbrick@nrows
 
+    nrelations <- dim(query_array)[1]
+    
     # call Fortran function
     lucc_process <- function(SB, ST, NR, BI, BO, QA) {
       out <- .Fortran("lucc_process", as.integer(SB), as.integer(ST), as.integer(NR), as.integer(BI), as.integer(BO), as.integer(QA))
       return(out[[5]])
     }
-    
+    #i=790
     # send blocks to Fortran function
-    
-    out <- parallel::mclapply(as.list(1:rbrick@nrows),function(i) {
-      bcin <- raster::getValuesBlock(rbrick, row=(i), nrows = 1, col = 1, ncols = rbrick@ncols, lyrs = 1:(raster::nlayers(rbrick)))
+    #dim(rbrick)
+    out <- parallel::mclapply(as.list(1:nblocks),function(i) {
+      bcin <- raster::getValues(rbrick, row=i, nrows = 1)
+      sizeblock <- dim(bcin)[1]
       
       bcin[is.na(bcin)] <- 0 
       blockin <- t(bcin)
@@ -72,11 +82,9 @@ event <- function(rbrick, query_array){
       return(out_aux)
       
     },  mc.cores = parallel::detectCores()-1)
-  
+    
     out1 <- unlist(out)
-    
-    
-    
+
     # redimension out to generate result restreBrick
     dim(out1) <- c(sizets, (dim(rbrick)[1]*dim(rbrick)[2]))
     

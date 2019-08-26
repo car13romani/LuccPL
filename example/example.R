@@ -1,29 +1,75 @@
 install.packages('package_name', dependencies=TRUE, repos='http://cran.rstudio.com/')
 
+ras
 
+path <- "/home/car/DADOS_MESTRADO/classified_MT_15/recorte3"
 
-path <- "/home/carlos/DADOS_MESTRADO/classified_MT_15/recorte3"
+co <- paste0(path, "/rasterCount.tif")
+brickpath <- paste0(path, "/stInput.tif")
+brickpathOut <- paste0(path, "/stOutput.tif")
 
-brickpath <- paste0(path, "bricktest.tif")
 dates <- as.character(read.table(paste0(path, "/dates.txt"))$V1)
 colors <- as.character(read.table(paste0(path, "/colors.txt"))$V1)
 metadata <- as.character(read.table(paste0(path, "/metadata.txt"))$V1)
 
-
-mt15cl <- LuccPL::import_brick(brickpath)
-
+library(raster)
+cou <- raster(co)
+rbrick <- raster::brick(brickpath)
+rbrickOut <- raster::brick(brickpathOut)
+plot(cou)
 plot_input()
-plot_input(rteste[[1]], dates, metadata, colors)
+plot_input(rbrick[[1]], dates, metadata, colors)
 
+library(parallel)
+library(raster)
+hist(mt15cl, breaks = 30)
 
+str(mt15cl[[1]])
 
 shinyApp(ui = ui, server = server)
+
+ss <- NULL
+
+
+
+aa <- count(brickRasterOutput,ss)
+
+dim(aa) <- c(dim(brickRasterOutput)[2],dim(brickRasterOutput)[1])
+
+aa <- t(aa)
+
+rlout <- raster::setValues(brickRasterOutput[[1]], values = aa)
+
+plot(rlout)
+
+plot(rbrickOut[[5]])
+rbrick
+
+
+
 
 
 # path
 #   |_ metadata.txt
 #   |_ dates.txt
 #   |_ colors.txt
+
+library(ggplot2)
+
+ggplot(as.data.frame(mt15cl[[1]]), aes(x = breaks, y = counts, fill =counts)) + ## Note the new aes fill here
+  geom_bar(stat = "identity",alpha = 0.8)+
+  xlab("Pearson correlation")+ ylab("Frequency")+
+  scale_x_continuous(breaks = seq(-1,1,0.25),
+                     labels = seq(-1,1,0.25))+
+  scale_fill_gradient(low="blue", high="red")  
+
+
+
+
+
+
+
+
 
 
 
@@ -161,6 +207,7 @@ query_array <- array(c(2,4,  #relations before,after
                        0,0,
                        1,0), c(2,6))  #union_op 1=or, 0=and
 
+#meets
 query_array <- array(c(2,  #relations before,after
                        0, #years init 4,5
                        6, #years final
@@ -168,6 +215,7 @@ query_array <- array(c(2,  #relations before,after
                        0,
                        0), c(1,6))  #union_op 1=or, 0=and
 
+#metby
 query_array <- array(c(3,  #relations before,after
                        7, #years init 4,5
                        17, #years final
@@ -175,20 +223,23 @@ query_array <- array(c(3,  #relations before,after
                        0,
                        0), c(1,6))  #union_op 1=or, 0=and
 
+#holds
 query_array <- array(c(4,  #relations before,after
-                       8, #years init 4,5
+                       6, #years init 4,5
                        12, #years final
                        6,  #patterns 1,3
                        0,
                        0), c(1,6))  #union_op 1=or, 0=and
 
+#recur
 query_array <- array(c(5,  #relations before,after
-                       7, #years init 4,5
-                       7, #years final
-                       4,  #patterns 1,3
+                       1, #years init 4,5
+                       6, #years final
+                       3,  #patterns 1,3
                        0,
                        0), c(1,6))  #union_op 1=or, 0=and
 
+#convert
 query_array <- array(c(6,  #relations before,after
                        6, #years init 4,5
                        0, #years final
@@ -196,24 +247,51 @@ query_array <- array(c(6,  #relations before,after
                        5,
                        0), c(1,6))  #union_op 1=or, 0=and
 
+#evolve
 query_array <- array(c(7,  #relations before,after
-                       4, #years init 4,5
-                       5, #years final
+                       1, #years init 4,5
+                       6, #years final
                        3,  #patterns 1,3
                        6,
                        0), c(1,6))  #union_op 1=or, 0=and
 
 
-query_array <- array(c(6,7,  #relations before,after
-                       6,4, #years init 4,5
-                       0,5, #years final
-                       3,3,  #patterns 1,3
-                       5,6,
-                       1,0), c(2,6))  #union_op 1=or, 0=and
+query_array <- array(c(1,3,3,  #relations before,after
+                       0,6,6, #years init 4,5
+                       6,17,17, #years final
+                       3,6,5,  #patterns 1,3
+                       0,0,0,
+                       0,1,0), c(3,6))  #union_op 1=or, 0=and
 
 
-ts <- c(3,3,4,3,3,3,5,6,6,6,6,6,4,6,6,6)
-blockout <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+
+query_array <- array(c(1,3,3,3,3,3,3,3,3,3,  #relations before,after
+                       0,6,6,6,6,6,6,6,6,6, #years init 4,5
+                       6,17,17,17,17,17,17,17,17,17, #years final
+                       3,6,5,4,7,8,9,10,11,12,  #patterns 1,3
+                       0,0,0,0,0,0,0,0,0,0,
+                       0,1,1,1,1,1,1,1,1,0), c(10,6))  #union_op 1=or, 0=and
+
+query_array <- array(c(7,7,7,7,7,7,7,7,7,7,7,7,  #relations before,after
+                       7,7,7,7,7,7,7,7,7,7,7,7, #years init 4,5
+                       7,7,7,7,7,7,7,7,7,7,7,7, #years final
+                       3,3,3,3,3,3,3,3,3,3,3,3,  #patterns 1,3
+                       2,4,5,6,7,8,9,14,13,12,11,10,
+                       1,1,1,1,1,1,1,1,1,1,1,0), c(12,6))  #union_op 1=or, 0=and
+
+query_array <- array(c(7,7,7,7,7,7,7,7,7,7,7,7,  #relations before,after
+                       1,1,1,1,1,1,1,1,1,1,1,1, #years init 4,5
+                       7,7,7,7,7,7,7,7,7,7,7,7, #years final
+                       3,3,3,3,3,3,3,3,3,3,3,3,  #patterns 1,3
+                       2,4,5,6,7,8,9,14,13,12,11,10,
+                       1,1,1,1,1,1,1,1,1,1,1,0), c(12,6))  #union_op 1=or, 0=and
+
+
+ts <- array(c(3,3,1,3,6,3,3,5,7,3,3,3,3,3,3,3,
+              3,3,6,6,6,3,3,3,3,3,3,3,3,3,3,3), c(2,16))
+ts <- c(3,3,4,3,3,6,6,6,4,6,6,6,4,6,6,6)
+blockout <- array(c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0), c(2,16))
 
 
 # call Fortran function
@@ -224,5 +302,88 @@ lucc_process <- function(SB, ST, NR, BI, BO, QA) {
 }
 
 
-lucc_process(SB = 1, ST = 16, NR = dim(query_array)[1], BI = ts, BO = blockout, QA = query_array)
+lucc_process(SB = 2, ST = 16, NR = dim(query_array)[1], BI = ts, BO = blockout, QA = query_array)
 
+
+
+
+x <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+diffs <- x[-1L] != x[-length(x)]
+
+idx <- c(which(diffs), length(x))
+diff(c(0, idx))
+
+bcin <- array(c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0), c(2,16))
+
+a <- rle(c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0))
+a$lengths[a$values==1]
+
+
+true_ <- which(x==1)
+length(true_)==0
+
+is.integer(true_)
+true_
+
+if(is.null(true_)){
+  counter <- 0
+}
+
+else { counter <- (max(true_) - min(true_) - 1) }
+
+
+
+
+bcout <- apply(bcin, 1, function(ts){
+  counter <- 0
+  first <- 0
+  for(i in 1:length(ts)) {
+    if(ts[i]==1){
+      if(first==0){first <- i}
+      else{}
+      first <- i - first
+      first <- i
+      }
+    
+    
+  }
+  return(counter)
+})
+bcout
+
+
+
+exemplo = function(x){
+  res= 0
+  for(i in 1 : length(x)){
+    res = res + x[i]
+  }
+  print(res)
+  res_raiz = sqrt(abs(res))
+  return(res/res_raiz)
+}
+teste = rnorm(1000000)
+exemplo(teste)
+
+
+Rprof()
+exemplo(teste)
+Rprof(NULL)
+summaryRprof()$sampling.time
+
+
+
+
+
+
+require(stats)
+system.time(for(i in 1:100) mad(runif(1000)))
+
+exT <- function(n = 10000) {
+
+  system.time(for(i in 1:n) x <- mean(rt(1000, df = 4)))
+}
+
+exT() 
+system.time(exT())

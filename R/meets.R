@@ -38,13 +38,21 @@
 #' 
 
 
- 
 
 
-meets <- function(pattern_list1, pattern_list2, date1, date2, dates, metadata) {
+
+meets <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date2 = NULL, dates = NULL, metadata = NULL) {
   and_or <- NULL
-  # pattern or list of pattern to que query
-  if(!is.character(pattern_list1)) stop("Pattern is not a string!")
+  ensurer::ensure_that(pattern_list1, !is.null(pattern_list1),
+                       err_desc = "pattern_list1, must be defined!")
+  ensurer::ensure_that(date1, !is.null(date1),
+                       err_desc = "date1, must be defined!")
+  ensurer::ensure_that(dates, !is.null(dates),
+                       err_desc = "dates, must be defined!")
+  ensurer::ensure_that(metadata, !is.null(metadata),
+                       err_desc = "metadata, must be defined!")
+  
+  
   
   if(length(pattern_list1) == 1) and_or <- 0
   if(length(pattern_list1) > 1) {
@@ -55,7 +63,7 @@ meets <- function(pattern_list1, pattern_list2, date1, date2, dates, metadata) {
   }
   
   date1[1:length(pattern_list1)] <- date1
-
+  
   # establishes the relationship between land use type and digital number in the classifications
   pattern_number1 <- mdata(pattern_list1, metadata)
   
