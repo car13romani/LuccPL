@@ -69,8 +69,8 @@ event <- function(rbrick, query_array){
     # send blocks to Fortran function
     #dim(rbrick)
     
-    cl <- parallel::makeCluster(detectCores())
-    cl <- parallel::clusterEvalQ(cl, {library(sf)})
+    cl <- parallel::makeCluster(parallel::detectCores())
+    #cl <- parallel::clusterEvalQ(cl, {library(sf)})
     
     out <- parallel::parApply(cl, as.list(1:nblocks),function(i) {
       bcin <- raster::getValues(rbrick, row=i, nrows = 1)
@@ -86,7 +86,7 @@ event <- function(rbrick, query_array){
       return(out_aux)
       
     })
-    parallel::stopCluster()
+    parallel::stopCluster(cl)
     
     out1 <- unlist(out)
 
