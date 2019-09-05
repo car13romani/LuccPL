@@ -16,27 +16,6 @@
 #################################################################
 
 
-#' @title variance
-#' @name variance
-#' @author Carlos Alexandre Romani
-#'
-#' @description Analysis 
-#' 
-#' @usage 
-#' 
-#' @param pattern_list1 list of land use types
-#' @param pattern_list2 list of land use types
-#' @param date1 start date
-#' @param date2 end date
-#' @param dates list of dates for each time-step
-#' @param metadata list of land use types according of raster digital number
-#' 
-#' @return
-#' @export
-#' @import
-#' @import
-#' 
-
 
 variance <- function(rbrick, for_time_step = FALSE){
   # case rbrick is a path of raster brick .tif
@@ -48,10 +27,9 @@ variance <- function(rbrick, for_time_step = FALSE){
     
     if(for_time_step == FALSE){
       #create a single layer raster
-      out <- parallel::mclapply(as.list(1:rbrick@nrows),function(i) {
+      cl <- parallel::makeCluster(parallel::detectCores())
+      out <- parallel::parLapply(cl, as.list(1:rbrick@nrows),function(i) {
         # extract a line from raster brick (cols x time)
-        
-        i <- 1
         
         bcin <- raster::getValuesBlock(rbrick, row=(i), nrows = 1, col = 1, ncols = rbrick@ncols, lyrs = 1:(raster::nlayers(rbrick)))
         
@@ -72,10 +50,12 @@ variance <- function(rbrick, for_time_step = FALSE){
         dim(bcout) <- dim(bcin)[1]
         return(bcout)
         
-      },  mc.cores = parallel::detectCores()-1)
+      })
+      parallel::stopCluster(cl)
       
-      dim(out1) <- c(dim(rbrick)[2],dim(rbrick)[1])
-      out1 <- t(out1)
+      
+      dim(out) <- c(dim(rbrick)[2],dim(rbrick)[1])
+      out1 <- t(out)
       
       # generate result raster layer
       return(raster::setValues(rbrick[[1]], values = out1))
@@ -84,7 +64,8 @@ variance <- function(rbrick, for_time_step = FALSE){
     
     else {
       # create vector and graphic
-      out <- parallel::mclapply(as.list(1:rbrick@nrows),function(i) {
+      cl <- parallel::makeCluster(parallel::detectCores())
+      out <- parallel::parLapply(cl, as.list(1:rbrick@nrows),function(i) {
         # extract a line from raster brick (cols x time)
         bcin <- raster::getValuesBlock(rbrick, row=(i), nrows = 1, col = 1, ncols = rbrick@ncols, lyrs = 1:(raster::nlayers(rbrick)))
         
@@ -94,7 +75,8 @@ variance <- function(rbrick, for_time_step = FALSE){
         dim(bcout) <- dim(bcin)[2]
         return(bcout)
         
-      },  mc.cores = parallel::detectCores()-1)
+      })
+      parallel::stopCluster(cl)
     }
     
     

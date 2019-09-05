@@ -16,28 +16,6 @@
 #################################################################
 
 
-#' @title count
-#' @name count
-#' @author Carlos Alexandre Romani
-#'
-#' @description Analysis 
-#' 
-#' @usage 
-#' 
-#' @param pattern_list1 list of land use types
-#' @param pattern_list2 list of land use types
-#' @param date1 start date
-#' @param date2 end date
-#' @param dates list of dates for each time-step
-#' @param metadata list of land use types according of raster digital number
-#' 
-#' @return
-#' @export count
-#' @import
-#' @import
-#' 
-#' 
-
 
   count <- function(rbrick, for_time_step = FALSE, metadata=NULL, dates=NULL){
     # case rbrick is a path of raster brick .tif
@@ -48,7 +26,8 @@
     if(typeof(rbrick) == "S4"){
       #create a single layer raster
       if(for_time_step == FALSE){
-        out <- parallel::mclapply(as.list(1:rbrick@nrows),function(i) {
+        cl <- parallel::makeCluster(parallel::detectCores())
+        out <- parallel::parLapply(cl, as.list(1:rbrick@nrows),function(i) {
           # extract a line from raster brick (cols x time)
           bcin <- raster::getValuesBlock(rbrick, row=(i), nrows = 1, col = 1, ncols = rbrick@ncols, lyrs = 1:(raster::nlayers(rbrick)))
           
@@ -58,7 +37,8 @@
           dim(bcout) <- dim(bcin)[1]
           return(bcout)
           
-        },  mc.cores = parallel::detectCores()-1)
+        })
+        parallel::stopCluster(cl)
       
         
         out1 <- unlist(out)
