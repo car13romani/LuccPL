@@ -70,8 +70,6 @@ event <- function(rbrick, query_array){
     #dim(rbrick)
     
     cl <- parallel::makeCluster(parallel::detectCores())
-    #cl <- parallel::clusterEvalQ(cl, {library(sf)})
-    
     out <- parallel::parLapply(cl, as.list(1:nblocks),function(i) {
       bcin <- raster::getValues(rbrick, row=i, nrows = 1)
       sizeblock <- dim(bcin)[1]
