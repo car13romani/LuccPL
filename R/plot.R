@@ -33,16 +33,27 @@
 #' @import rasterVis
 #' 
 
-plot_input <- function(X, date, pattern, color){
+plot_input <- function(X,date,pattern,color,pathMPinput,map_title,Width,Height){
   # read RasterStackTS from file X
   
   myKey <- list(rectangles=list(col = color),text=list(lab=pattern),
                 space='bottom',
-                font=.3,
-                width=.3,
+                font=.6,
+                width=.8,
                 columns=4)
-  
-  rasterVis::levelplot(X, col.regions=color, colorkey=FALSE,names.attr = substr(date, 1, 4),key = myKey, scales=list(draw=FALSE), pretty=FALSE)
+  jpeg(pathMPinput,width=Width, height=Height)
+  print(rasterVis::levelplot(X,
+                             main = list(map_title,side=1,line=0.5),
+                             col.regions=color, 
+                             maxpixels = 1e9, 
+                             colorkey=FALSE,
+                             names.attr = substr(date, 1, 4),
+                             key = myKey, 
+                             scales=list(draw=FALSE),
+                             xscale.components = xscale.raster,
+                             yscale.components = yscale.raster,
+                             pretty=TRUE))
+  dev.off()
 }
 
 
@@ -63,13 +74,24 @@ plot_input <- function(X, date, pattern, color){
 #' @import rasterVis
 #' 
 
-plot_output <- function(X, date){
-  
-  myKey2 <- list(rectangles=list(col = c("#000000", "#FFFFFF")),text=list(lab=c('True', 'False')),
+plot_output <- function(X,date,pathMPoutput,map_title,Width,Height){
+  color1 <- c("white","white","black","black")
+  myKey <- list(rectangles=list(col = color1),text=list(lab=c("False","","True","")),
                  space='bottom',
-                 font=.3,
-                 width=.3,
+                 font=.6,
+                 width=.8,
                  columns=2)
-  
-  rasterVis::levelplot(X, col.regions = c("#FFFFFF","#000000"), colorkey=FALSE, key = myKey2, names.attr = substr(date, 1, 4), scales=list(draw=FALSE))
+  jpeg(pathMPoutput,width=Width, height=Height)
+  print(rasterVis::levelplot(X,
+                             main = list(map_title,side=1,line=0.5),
+                             col.regions = color1, 
+                             maxpixels = 1e9, 
+                             colorkey=FALSE,
+                             names.attr = substr(date, 1, 4),
+                             key = myKey, 
+                             scales=list(draw=FALSE),
+                             xscale.components = xscale.raster,
+                             yscale.components = yscale.raster,
+                             pretty=TRUE))
+  dev.off()
 }
