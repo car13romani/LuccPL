@@ -30,7 +30,7 @@
         out <- parallel::parLapply(cl, as.list(1:rbrick@nrows),function(i) {
           # extract a line from raster brick (cols x time)
           bcin <- raster::getValuesBlock(rbrick, row=(i), nrows = 1, col = 1, ncols = rbrick@ncols, lyrs = 1:(raster::nlayers(rbrick)))
-          
+
           bcin[is.na(bcin)] <- 0
           bcout <- NULL
           bcout <- apply(bcin, 1, sum)
@@ -38,6 +38,8 @@
           return(bcout)
           
         })
+        
+      
         parallel::stopCluster(cl)
       
         

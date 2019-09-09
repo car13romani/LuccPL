@@ -34,7 +34,7 @@ variance <- function(rbrick){
         # extract a line from raster brick (cols x time)
         
         bcin <- raster::getValuesBlock(rbrick, row=(i), nrows = 1, col = 1, ncols = rbrick@ncols, lyrs = 1:(raster::nlayers(rbrick)))
-        
+
         bcin[is.na(bcin)] <- 0
         bcout <- NULL
         bcout <- apply(bcin, 1, function(x){
@@ -43,28 +43,28 @@ variance <- function(rbrick){
             if(x[i-1]!=x[i]){
               counter <- counter + 1
             }
-            
           }
-          
           return(counter)
-          
         })
         dim(bcout) <- dim(bcin)[1]
         return(bcout)
         
       })
+      
+
       parallel::stopCluster(cl)
       
+      out1 <- unlist(out)
       
-      dim(out) <- c(dim(rbrick)[2],dim(rbrick)[1])
-      out1 <- t(out)
+      dim(out1) <- c(dim(rbrick)[2],dim(rbrick)[1])
+      out1 <- t(out1)
       
       # generate result raster layer
       return(raster::setValues(rbrick[[1]], values = out1))
       
     }
 
-    out1 <- unlist(out)
+    
 
   
 }
