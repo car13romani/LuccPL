@@ -21,7 +21,9 @@
 
 ###############  CREATE RASTER BRICK  ###############
 
-path <- "/home/carlos/Dropbox/MESTRADO/DADOS_MESTRADO/13_classes_MT_recorte/"
+#path <- "/home/carlos/Dropbox/MESTRADO/DADOS_MESTRADO/13_classes_MT_recorte/"
+path <- "C:/Users/carlo/Dropbox/MESTRADO/DADOS_MESTRADO/13_classes_MT_recorte/"
+
 # list raster on folder
 lst <- list.files(path=paste0(path,"/raster"),pattern='.tif$',full.names=TRUE)
 # stack creation
@@ -87,8 +89,17 @@ count_output <- LuccPL::count(brickRasterOutput)
 raster::writeRaster(count_output, filename = paste0(path, "/stCount.tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
 
 
+###############  VARIANCE  ###############
 
+variance_output <- LuccPL::variance(rbrick)
 
+raster::writeRaster(variance_output, filename = paste0(path, "/stVariance.tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
+
+###############  TRUE  ###############
+
+true_output <- LuccPL::true(brickRasterOutput)
+
+raster::writeRaster(true_output, filename = paste0(path, "/stTrue.tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
 
 ###############  PLOT  ###############
 
