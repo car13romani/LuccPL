@@ -52,9 +52,10 @@ true <- function(rbrick){
       })
       parallel::stopCluster(cl)
       
+      out1 <- unlist(out)
       
-      dim(out) <- c(dim(rbrick)[2],dim(rbrick)[1])
-      out1 <- t(out)
+      dim(out1) <- c(dim(rbrick)[2],dim(rbrick)[1])
+      out1 <- t(out1)
       
       # generate result raster layer
       return(raster::setValues(rbrick[[1]], values = out1))
@@ -62,7 +63,7 @@ true <- function(rbrick){
     }
     
 
-    out1 <- unlist(out)
+    
     
   
 }
