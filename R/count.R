@@ -58,7 +58,7 @@
         a <- hist(rbrick[[1]], maxpixels=1000000000000, plot=FALSE)
         
         # input raster
-        if(max(a$breaks>1)){
+        if(max(a$breaks)>1.1){
           df_ <- data.frame("land_use" = metadata)
           for(i in 1:nlayers(rbrick)){
             a[[i]] <- hist(rbrick[[i]], maxpixels=1000000000000, plot=FALSE)
