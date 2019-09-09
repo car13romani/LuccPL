@@ -88,7 +88,7 @@
             ci <- a[[i]]$counts
             co <- NULL
             
-            co <- c(ci[(which(a[[i]]$breaks==0))],ci[(which(a$breaks==max(a$breaks)))-1])
+            co <- c(ci[(which(a[[i]]$breaks==0))],ci[(which(a[[i]]$breaks==max(a[[i]]$breaks)))-1])
             df_[[i+1]] <- co
           }
           colnames(df_) <- c("land_use", dates)
