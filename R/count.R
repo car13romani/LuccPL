@@ -61,7 +61,7 @@
         if(max(a$breaks)>1.1){
           df_ <- data.frame("land_use" = metadata)
           for(i in 1:nlayers(rbrick)){
-            a[[i]] <- hist(rbrick[[i]], maxpixels=1000000000000, plot=FALSE)
+            a[[i]] <- raster::hist(rbrick[[i]], maxpixels=1000000000000, plot=FALSE)
             ci <- a[[i]]$counts
             rd <- round(a[[i]]$mids)
             co <- NULL
@@ -82,35 +82,18 @@
         else{
           df_ <- data.frame("land_use"=c("False","True"))
           for(i in 1:nlayers(rbrick)){
-            a[[i]] <- hist(rbrick[[i]], maxpixels=1000000000000, plot=FALSE)
+            a[[i]] <- raster::hist(rbrick[[i]], maxpixels=1000000000000, plot=FALSE)
             ci <- a[[i]]$counts
             co <- NULL
             
-            co <- c(ci[(which(a[[i]]$breaks==0))],ci[(which(a[[i]]$breaks==1))-1])
+            co <- c(ci[(which(a[[i]]$breaks==0))],ci[(which(a$breaks==max(a$breaks)))-1])
             df_[[i+1]] <- co
           }
           colnames(df_) <- c("land_use", dates)
           return(df_)
         }
           
-          
-          
-      #   ci <- NULL
-      #   for(i in 1:nlayers(rbrick)){
-      #     ci <- c(ci, a[[i]]$counts)
-      #   }
-      #   co <- ci[ci!=0]
-      #   cp <- NULL
-      #   for(i in 1:length(co)){
-      #     if((i%%2)==0){
-      #       cp <- c(cp, co[i])
-      #     }
-      #   }
-      #   return(cp)
-      # }
-      # 
-      
-      
+
       }
 
       
