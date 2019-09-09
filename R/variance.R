@@ -20,7 +20,7 @@
 # count number of classes in a classified raster
 
 
-variance <- function(rbrick, for_time_step = FALSE){
+variance <- function(rbrick){
   # case rbrick is a path of raster brick .tif
   if(typeof(rbrick) == "character"){
     rbrick <- raster::brick(rbrick, progress = "text")
@@ -28,7 +28,6 @@ variance <- function(rbrick, for_time_step = FALSE){
   # import rbrick
   if(typeof(rbrick) == "S4"){
     
-    if(for_time_step == FALSE){
       #create a single layer raster
       cl <- parallel::makeCluster(parallel::detectCores())
       out <- parallel::parLapply(cl, as.list(1:rbrick@nrows),function(i) {
@@ -64,27 +63,8 @@ variance <- function(rbrick, for_time_step = FALSE){
       return(raster::setValues(rbrick[[1]], values = out1))
       
     }
-    
-    else {
-      # create vector and graphic
-      cl <- parallel::makeCluster(parallel::detectCores())
-      out <- parallel::parLapply(cl, as.list(1:rbrick@nrows),function(i) {
-        # extract a line from raster brick (cols x time)
-        bcin <- raster::getValuesBlock(rbrick, row=(i), nrows = 1, col = 1, ncols = rbrick@ncols, lyrs = 1:(raster::nlayers(rbrick)))
-        
-        bcin[is.na(bcin)] <- 0
-        bcout <- NULL
-        bcout <- apply(bcin, 2, sum)
-        dim(bcout) <- dim(bcin)[2]
-        return(bcout)
-        
-      })
-      parallel::stopCluster(cl)
-    }
-    
-    
+
     out1 <- unlist(out)
 
-  }
   
 }
