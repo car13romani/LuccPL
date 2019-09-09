@@ -29,9 +29,9 @@ lst <- list.files(path=paste0(path,"/raster"),pattern='.tif$',full.names=TRUE)
 # stack creation
 rstack <- raster::stack(lst)
 # brick creation
-rbrick <- raster::brick(rstack,  progress = "text", datatype='INT4S')
+rbrickI <- raster::brick(rstack,  progress = "text", datatype='INT4S')
 # save raster brick
-raster::writeRaster(rbrick, filename = paste0(path, "/stInput.tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
+raster::writeRaster(rbrickI, filename = paste0(path, "/stInput.tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
 
 
 
@@ -42,7 +42,7 @@ dates <- as.character(read.table(paste0(path, "/dates.txt"))$V1)
 colors <- as.character(read.table(paste0(path, "/colors.txt"))$V1)
 metadata <- as.character(read.table(paste0(path, "/metadata.txt"))$V1)
 
-rbrick <- raster::brick(paste0(path,"/stInput.tif"))
+rbrickI <- raster::brick(paste0(path,"/stInput.tif"))
 
 
 
@@ -67,51 +67,51 @@ Flist <- c(
 
 
 # functions to make a query array
-query_array <- LuccPL::query(rbrick,Flist)
+query_array <- LuccPL::query(rbrickI,Flist)
 
 # Function to process a query array in rasterBrick
-brickRasterOutput <- LuccPL::event(rbrick, query_array)
+rbrickO <- LuccPL::event(rbrickI, query_array)
 
 
 # save raster result on disk
-raster::writeRaster(brickRasterOutput, filename = paste0(path, "/stOutput.tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
+raster::writeRaster(rbrickO, filename = paste0(path, "/stOutput.tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
 
 
-for (i in 1:nlayers(brickRasterOutput)) {
-  raster::writeRaster(brickRasterOutput[[i]], filename = paste0(path, "/raster_out/raster_out_",i,".tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
+for (i in 1:nlayers(rbrickO)) {
+  raster::writeRaster(rbrickO[[i]], filename = paste0(path, "/raster_out/raster_out_",i,".tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
 }
 
 
 ###############  COUNT  ###############
 
-count_output <- LuccPL::count(brickRasterOutput)
+count_output <- LuccPL::count(rbrickO)
 
-raster::writeRaster(count_output, filename = paste0(path, "/stCount.tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
+raster::writeRaster(count_output, filename = paste0(path, "/rasterCount.tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
 
 
 ###############  VARIANCE  ###############
 
-variance_output <- LuccPL::variance(rbrick)
+variance_output <- LuccPL::variance(rbrickI)
 
-raster::writeRaster(variance_output, filename = paste0(path, "/stVariance.tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
+raster::writeRaster(variance_output, filename = paste0(path, "/rasterVariance.tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
 
 ###############  TRUE  ###############
 
-true_output <- LuccPL::true(brickRasterOutput)
+true_output <- LuccPL::true(rbrickO)
 
-raster::writeRaster(true_output, filename = paste0(path, "/stTrue.tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
+raster::writeRaster(true_output, filename = paste0(path, "/rasterTrue.tif"), datatype='INT4S', overwrite=TRUE, progress = "text")
 
 ###############  PLOT  ###############
 
 # plot input
-LuccPL::plot_input(rbrick,dates,metadata,colors,paste0(path,"/mpInput.jpeg"), map_title="13 classes MT recorte", Width = 1200, Height = 1200)
+LuccPL::plot_input(rbrickI,dates,metadata,colors,paste0(path,"/mpInput.jpeg"), map_title="13 classes MT recorte", Width = 1200, Height = 1200)
 
 # plot output
-LuccPL::plot_output(brickRasterOutput,dates,paste0(path,"/mpOutput.jpeg"), map_title="Evolve Forest - Soy", Width = 1200, Height = 1200)
+LuccPL::plot_output(rbrickO,dates,paste0(path,"/mpOutput.jpeg"), map_title="Evolve Forest - Soy", Width = 1200, Height = 1200)
 
 # create table 
-graphIn <- LuccPL::count(rbrick, for_time_step = TRUE, metadata = metadata, dates = dates)
-graphOut <- LuccPL::count(brickRasterOutput, for_time_step = TRUE, metadata = c("0.false","1.true"), dates = dates)
+graphIn <- LuccPL::count(rbrickI, for_time_step = TRUE, metadata = metadata, dates = dates)
+graphOut <- LuccPL::count(rbrickO, for_time_step = TRUE, metadata = c("0.false","1.true"), dates = dates)
 
 # export csv
 write.csv(graphIn, paste0(path,"/graphIn.csv"))
