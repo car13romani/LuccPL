@@ -17,6 +17,9 @@
 
 
 
+# count number of classes in a classified raster
+
+
 variance <- function(rbrick, for_time_step = FALSE){
   # case rbrick is a path of raster brick .tif
   if(typeof(rbrick) == "character"){
@@ -36,9 +39,9 @@ variance <- function(rbrick, for_time_step = FALSE){
         bcin[is.na(bcin)] <- 0
         bcout <- NULL
         bcout <- apply(bcin, 1, function(x){
-          counter <- 0
-          for (i in 1:length(x)-1) {
-            if(x[i]!=x[i+1]){
+          counter <- 1
+          for (i in 2:length(x)) {
+            if(x[i-1]!=x[i]){
               counter <- counter + 1
             }
             
