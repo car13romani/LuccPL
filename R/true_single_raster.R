@@ -34,15 +34,6 @@ true <- function(rbrick){
         
         bcin <- raster::getValuesBlock(rbrick, row=(i), nrows = 1, col = 1, ncols = rbrick@ncols, lyrs = 1:(raster::nlayers(rbrick)))
         
-        
-        
-        bcin <- c(0,0,1,1,0,0)
-        
-        
-        ifsum(bcin==1)>=1
-        
-        
-        
         bcin[is.na(bcin)] <- 0
         bcout <- NULL
         bcout <- apply(bcin, 1, function(x){
