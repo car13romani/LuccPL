@@ -8,7 +8,7 @@
 ##                                                             ##
 ##       R script                                              ##
 ##                                                             ##
-##                                             2018-03-29      ##
+##                                             2019-08-29      ##
 ##                                                             ##
 ##            Land Use and Cover Data Analysis                 ##
 ##                                                             ##
@@ -16,31 +16,44 @@
 #################################################################
 
 
-#' @title lucc_barplot_result
-#' @name lucc_barplot_result
+#' @title Plot result in bar or line graph
+#' @name luccpl_barplot_result
+#' @aliases luccpl_barplot_result
 #' @author Carlos Alexandre Romani
-#'
-#' @description barplot
+#' @docType data
 #' 
-#' @usage (rbrick, query_array)
+#' @description Creates a line or bar graph that represents the result of a query. 
+#'  
+#' @usage luccpl_barplot_result(df=NULL, dates=NULL, graph_title=NULL, style="bar", colors=NULL, path_save_jpeg=NULL)
 #' 
-#' @param rbrick input brick
-#' @param query_array result of parse expression
+#' @param df Dataframe generated from the LuccPL::count(for_time_step = TRUE), when count is applied to the rasterBrick result of a query.
+#' @param dates Integer. A vector with the timeline dates.
+#' @param graph_title Character. The name of graph.
+#' @param style Character. "bar" or "line" graph.
+#' @param colors Character. A vector with color names.
+#' @param path_save_jpeg Character. The path of output graph in .jpeg format.
 #' 
-#' @return Brick of result (bool)
-#' @export lucc_barplot_result
-#' @import raster
-#' @import parallel
+#' @return A jpeg file with bar or line graph that represents the result of a query.
+#' @importFrom reshape2 melt
+#' @importFrom ggplot2 ggplot geom_bar ggtitle theme scale_color_manual ggsave
+#' @importFrom ensurer ensure_that
+#' 
+#' @export 
 #' 
 
-#df <- graphOut
 
+luccpl_barplot_result <- function(df=NULL, dates=NULL, graph_title=NULL, style="bar", colors=NULL, path_save_jpeg=NULL){
 
+  ensurer::ensure_that(df, !is.null(df),
+                       err_desc = "Define a valid array.")
+  ensurer::ensure_that(dates, !is.null(dates),
+                       err_desc = "Define a valid timeline.")
+  
+  if(!is.null(colors)){
+    df$colors1 <- c("white","black")
+  }
+  else{df$colors1 <- colors}
 
-# df is output of count(for_time_step=TRUE)
-lucc_barplot_result <- function(df=NULL, dates=NULL, graph_title=NULL, style="bar", colors=NULL, path_save_jpeg=NULL){
-
-  df$colors1 <- c("white","black")
   
   DF1 <- reshape2::melt(df, id.var=c("land_use","colors1"))
   
@@ -77,14 +90,43 @@ lucc_barplot_result <- function(df=NULL, dates=NULL, graph_title=NULL, style="ba
 
 
 
-lucc_barplot_data <- function(df=NULL, dates=NULL, style="bar", graph_title=NULL, colors=NULL, path_save_jpeg=NULL){
+
+#' @title Plot input data in bar or line graph
+#' @name luccpl_barplot_data
+#' @aliases luccpl_barplot_data
+#' @author Carlos Alexandre Romani
+#' @docType data
+#' 
+#' @description Creates a line or bar graph that represents the input data. 
+#'  
+#' @usage luccpl_barplot_data(df=NULL, dates=NULL, graph_title=NULL, style="bar", colors=NULL, path_save_jpeg=NULL)
+#' 
+#' @param df Dataframe generated from the LuccPL::count(for_time_step = TRUE), when count is applied to the input rasterBrick.
+#' @param dates Integer. A vector with the timeline dates.
+#' @param graph_title Character. The name of graph.
+#' @param style Character. "bar" or "line" graph.
+#' @param colors Character. A vector with color names of original raster, same order.
+#' @param path_save_jpeg Character. The path of output graph in .jpeg format.
+#' 
+#' @return A jpeg file with bar or line graph that represents the input data.
+#' @importFrom reshape2 melt
+#' @importFrom ggplot2 ggplot geom_bar ggtitle theme scale_color_manual ggsave
+#' @importFrom ensurer ensure_that
+#' 
+#' @export 
+#' 
+
+
+luccpl_barplot_data <- function(df=NULL, dates=NULL, style="bar", graph_title=NULL, colors=NULL, path_save_jpeg=NULL){
   
- # ensurer::ensure_that(df, !is.null(df),
-#                       err_desc = "Define a valid array.")
-#ensurer::ensure_that(dates, !is.null(dates),
-#                       err_desc = "Define a valid timeline.")
-#  ensurer::ensure_that(colors, !is.null(colors),
-#                       err_desc = "Define valid colors.")
+  ensurer::ensure_that(df, !is.null(df),
+                       err_desc = "Define a valid array.")
+  ensurer::ensure_that(dates, !is.null(dates),
+                       err_desc = "Define a valid timeline.")
+  ensurer::ensure_that(colors, !is.null(colors),
+                       err_desc = "Define valid colors.")
+  
+  
   df$colors1 <- colors
   
   DF1 <- reshape2::melt(df, id.var=c("land_use","colors1"))

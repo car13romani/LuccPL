@@ -36,6 +36,7 @@
 #' @import
 #' @import
 #' 
+#' 
 
 
 convert <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date2 = NULL, dates = NULL, metadata = NULL) {
