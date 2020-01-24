@@ -16,24 +16,36 @@
 #################################################################
 
 
-#' @title Plot input
-#' @name plot_input
-#' @author Carlos Alexandre Romani
-#'
-#' @description Create a multiplot from input classified images
-#' 
-#' @usage plot_input(X, date, pattern, color)
-#' 
-#' @param X is a brick
-#' @param date is a vector with a time serie of dates
-#' @param pattern is a metadata of land use classes
-#' @param color is the color scheme to represent each classe
-#' 
-#' @export
-#' @import rasterVis
-#' 
 
-plot_input <- function(X,date,pattern,color,pathMPinput,map_title,Width,Height){
+
+#' @title Plot Input Data
+#' @name luccpl_plot_input
+#' @aliases luccpl_plot_input
+#' @author Carlos Alexandre Romani
+#' @docType data
+#'
+#' @description This function creates an image in .jpeg format with all layers of the raster brick, 
+#' as well as caption of the land use classes
+#'
+#' @usage luccpl_plot_input(X,date,pattern,color,pathMPinput,map_title,Width,Height)
+#'
+#' @param X S4. A spatiotemporal raster brick
+#' @param date Integer. A vector that represents the timeline
+#' @param pattern Character. A vector with the land use patterns of the input data
+#' @param color Character. A vector with the colors to represent land use
+#' @param pathMPinput Character. Path to save .jpeg of the raster brick
+#' @param map_title Character. Title of multiplot
+#' @param Width Integer. Dimension of multiplot
+#' @param Height Integer. Dimension of multiplot
+#'
+#' @keywords datasets
+#' @return Multiplot of input raster brick
+#' 
+#' @importFrom rasterVis levelplot
+#' @export
+#'
+
+luccpl_plot_input <- function(X,date,pattern,color,pathMPinput,map_title,Width,Height){
   # read RasterStackTS from file X
   
   myKey <- list(rectangles=list(col = color),text=list(lab=pattern),
@@ -59,22 +71,30 @@ plot_input <- function(X,date,pattern,color,pathMPinput,map_title,Width,Height){
 
 
 
-#' @title Plot output
-#' @name plot_output
+#' @title Plot Output Data
+#' @name luccpl_plot_output
+#' @aliases luccpl_plot_output
 #' @author Carlos Alexandre Romani
+#' @docType data
 #'
-#' @description Create a multiplot of output
+#' @description This function creates an image in .jpeg format with all layers of the output raster brick
+#'
+#' @usage luccpl_plot_output(X,date,pathMPinput,map_title,Width,Height)
+#'
+#' @param X S4. A spatiotemporal raster brick, result of query
+#' @param date Integer. A vector that represents the timeline
+#' @param pathMPinput Character. Path to save .jpeg of the raster brick
+#' @param map_title Character. Title of multiplot
+#' @param Width Integer. Dimension of multiplot
+#' @param Height Integer. Dimension of multiplot
+#'
+#' @keywords datasets
+#' @return Multiplot of output raster brick
 #' 
-#' @usage plot_output(X, date)
-#' 
-#' @param X is a brick
-#' @param date is a vector with a time serie of dates
-#' 
+#' @importFrom rasterVis levelplot
 #' @export
-#' @import rasterVis
-#' 
-
-plot_output <- function(X,date,pathMPoutput,map_title,Width,Height){
+#'
+luccpl_plot_output <- function(X,date,pathMPoutput,map_title,Width,Height){
   color1 <- c("white","white","black","black")
   myKey <- list(rectangles=list(col = color1),text=list(lab=c("False","","True","")),
                  space='bottom',
