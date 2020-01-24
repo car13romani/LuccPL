@@ -17,10 +17,30 @@
 
 
 
-# count number of classes in a classified raster
 
 
-true <- function(rbrick){
+#' @title True
+#' @name luccpl_true
+#' @aliases luccpl_true
+#' @author Carlos Alexandre Romani
+#' @docType data
+#'
+#' @description 
+#'
+#' @usage luccpl_true(rbrick)
+#'
+#' @param rbrick S4. A spatiotemporal raster brick, output from luccpl_event.
+#'
+#' @keywords datasets
+#' @return A single layer raster with true in locations with true for locations with at least one true on the timeline
+#' 
+
+#' @importFrom raster brick getValuesBlocknlayers setValues
+#' @importFrom parallel makeCluster detectCores parLapply stopCluster
+#' @export
+#'
+
+luccpl_true <- function(rbrick){
   # case rbrick is a path of raster brick .tif
   if(typeof(rbrick) == "character"){
     rbrick <- raster::brick(rbrick, progress = "text")
@@ -37,13 +57,13 @@ true <- function(rbrick){
         bcin[is.na(bcin)] <- 0
         bcout <- NULL
         bcout <- apply(bcin, 1, function(x){
-          counter <- 0
+          luccpl_counter <- 0
           
           if(sum(x==1)>=1){
-            counter <- 1
+            luccpl_counter <- 1
           }
           
-          return(counter)
+          return(luccpl_counter)
           
         })
         dim(bcout) <- dim(bcin)[1]
@@ -61,9 +81,6 @@ true <- function(rbrick){
       return(raster::setValues(rbrick[[1]], values = out1))
       
     }
-    
 
-    
-    
   
 }
