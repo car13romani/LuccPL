@@ -6,16 +6,14 @@
 ##       National Institute for Space Research (INPE), Brazil  ##
 ##                                                             ##
 ##                                                             ##
-##       R script                                  ##
+##       R script                                              ##
 ##                                                             ##
-##                                             2018-03-29      ##
+##                                             2020-01-10      ##
 ##                                                             ##
 ##            Land Use and Cover Data Analysis                 ##
 ##                                                             ##
 ##                                                             ##
 #################################################################
-
-
 
 
 

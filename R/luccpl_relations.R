@@ -6,9 +6,9 @@
 ##       National Institute for Space Research (INPE), Brazil  ##
 ##                                                             ##
 ##                                                             ##
-##       R script                                  ##
+##       R script                                              ##
 ##                                                             ##
-##                                             2018-03-29      ##
+##                                             2020-01-10      ##
 ##                                                             ##
 ##            Land Use and Cover Data Analysis                 ##
 ##                                                             ##
@@ -43,29 +43,19 @@
 #'
 
 # 1. Relation Before
-luccpl_before <-
-  function(pattern_list1 = NULL,
-           pattern_list2 = NULL,
-           date1 = NULL,
-           date2 = NULL,
-           dates = NULL,
-           metadata = NULL) {
+luccpl_before <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date2 = NULL, dates = NULL, metadata = NULL) {
     and_or <- NULL
-    ensurer::ensure_that(pattern_list1,!is.null(pattern_list1),
-                         err_desc = "pattern_list1, must be defined!")
-    ensurer::ensure_that(date1,!is.null(date1),
-                         err_desc = "date1, must be defined!")
-    ensurer::ensure_that(dates,!is.null(dates),
-                         err_desc = "dates, must be defined!")
-    ensurer::ensure_that(metadata,!is.null(metadata),
-                         err_desc = "metadata, must be defined!")
+    ensurer::ensure_that(pattern_list1, !is.null(pattern_list1), err_desc = "pattern_list1, must be defined!")
+    ensurer::ensure_that(date1, !is.null(date1), err_desc = "date1, must be defined!")
+    ensurer::ensure_that(dates, !is.null(dates), err_desc = "dates, must be defined!")
+    ensurer::ensure_that(metadata, !is.null(metadata), err_desc = "metadata, must be defined!")
     
-    if (length(pattern_list1) == 1)
-      and_or <- 0
+    if (length(pattern_list1) == 1) 
+        and_or <- 0
     if (length(pattern_list1) > 1) {
-      # or for all connections except the last
-      and_or[1:(length(pattern_list1))] <- 1
-      and_or[length(pattern_list1)] <- 0
+        # or for all connections except the last
+        and_or[1:(length(pattern_list1))] <- 1
+        and_or[length(pattern_list1)] <- 0
     }
     
     date1[1:length(pattern_list1)] <- date1
@@ -78,19 +68,12 @@ luccpl_before <-
     
     query_array <- NULL
     for (i in 1:length(pattern_list1)) {
-      # for each pattern of land use a column is created in the query_array
-      query_array <-
-        c(query_array,
-          1,
-          0,
-          time_step_number[i],
-          pattern_number1[i],
-          0,
-          and_or[i])
+        # for each pattern of land use a column is created in the query_array
+        query_array <- c(query_array, 1, 0, time_step_number[i], pattern_number1[i], 0, and_or[i])
     }
     
     return(query_array)
-  }
+}
 
 
 
@@ -122,29 +105,19 @@ luccpl_before <-
 #'
 
 # 2. Relation After
-luccpl_after <-
-  function(pattern_list1 = NULL,
-           pattern_list2 = NULL,
-           date1 = NULL,
-           date2 = NULL,
-           dates = NULL,
-           metadata = NULL) {
+luccpl_after <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date2 = NULL, dates = NULL, metadata = NULL) {
     and_or <- NULL
-    ensurer::ensure_that(pattern_list1,!is.null(pattern_list1),
-                         err_desc = "pattern_list1, must be defined!")
-    ensurer::ensure_that(date1,!is.null(date1),
-                         err_desc = "date1, must be defined!")
-    ensurer::ensure_that(dates,!is.null(dates),
-                         err_desc = "dates, must be defined!")
-    ensurer::ensure_that(metadata,!is.null(metadata),
-                         err_desc = "metadata, must be defined!")
+    ensurer::ensure_that(pattern_list1, !is.null(pattern_list1), err_desc = "pattern_list1, must be defined!")
+    ensurer::ensure_that(date1, !is.null(date1), err_desc = "date1, must be defined!")
+    ensurer::ensure_that(dates, !is.null(dates), err_desc = "dates, must be defined!")
+    ensurer::ensure_that(metadata, !is.null(metadata), err_desc = "metadata, must be defined!")
     
-    if (length(pattern_list1) == 1)
-      and_or <- 0
+    if (length(pattern_list1) == 1) 
+        and_or <- 0
     if (length(pattern_list1) > 1) {
-      # or for all connections except the last
-      and_or[1:(length(pattern_list1))] <- 1
-      and_or[length(pattern_list1)] <- 0
+        # or for all connections except the last
+        and_or[1:(length(pattern_list1))] <- 1
+        and_or[length(pattern_list1)] <- 0
     }
     
     date1[1:length(pattern_list1)] <- date1
@@ -157,19 +130,12 @@ luccpl_after <-
     
     query_array <- NULL
     for (i in 1:length(pattern_list1)) {
-      # for each pattern of land use a column is created in the query_array
-      query_array <-
-        c(query_array,
-          1,
-          time_step_number[i],
-          (length(dates) + 1),
-          pattern_number1[i],
-          0,
-          and_or[i])
+        # for each pattern of land use a column is created in the query_array
+        query_array <- c(query_array, 1, time_step_number[i], (length(dates) + 1), pattern_number1[i], 0, and_or[i])
     }
     
     return(query_array)
-  }
+}
 
 
 
@@ -201,29 +167,19 @@ luccpl_after <-
 #'
 
 # 3. Relation Meets
-luccpl_meets <-
-  function(pattern_list1 = NULL,
-           pattern_list2 = NULL,
-           date1 = NULL,
-           date2 = NULL,
-           dates = NULL,
-           metadata = NULL) {
+luccpl_meets <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date2 = NULL, dates = NULL, metadata = NULL) {
     and_or <- NULL
-    ensurer::ensure_that(pattern_list1,!is.null(pattern_list1),
-                         err_desc = "pattern_list1, must be defined!")
-    ensurer::ensure_that(date1,!is.null(date1),
-                         err_desc = "date1, must be defined!")
-    ensurer::ensure_that(dates,!is.null(dates),
-                         err_desc = "dates, must be defined!")
-    ensurer::ensure_that(metadata,!is.null(metadata),
-                         err_desc = "metadata, must be defined!")
+    ensurer::ensure_that(pattern_list1, !is.null(pattern_list1), err_desc = "pattern_list1, must be defined!")
+    ensurer::ensure_that(date1, !is.null(date1), err_desc = "date1, must be defined!")
+    ensurer::ensure_that(dates, !is.null(dates), err_desc = "dates, must be defined!")
+    ensurer::ensure_that(metadata, !is.null(metadata), err_desc = "metadata, must be defined!")
     
-    if (length(pattern_list1) == 1)
-      and_or <- 0
+    if (length(pattern_list1) == 1) 
+        and_or <- 0
     if (length(pattern_list1) > 1) {
-      # or for all connections except the last
-      and_or[1:(length(pattern_list1))] <- 1
-      and_or[length(pattern_list1)] <- 0
+        # or for all connections except the last
+        and_or[1:(length(pattern_list1))] <- 1
+        and_or[length(pattern_list1)] <- 0
     }
     
     date1[1:length(pattern_list1)] <- date1
@@ -236,19 +192,12 @@ luccpl_meets <-
     
     query_array <- NULL
     for (i in 1:length(pattern_list1)) {
-      # for each pattern of land use a column is created in the query_array
-      query_array <-
-        c(query_array,
-          2,
-          0,
-          time_step_number[i],
-          pattern_number1[i],
-          0,
-          and_or[i])
+        # for each pattern of land use a column is created in the query_array
+        query_array <- c(query_array, 2, 0, time_step_number[i], pattern_number1[i], 0, and_or[i])
     }
     
     return(query_array)
-  }
+}
 
 
 
@@ -280,29 +229,19 @@ luccpl_meets <-
 #'
 
 # 4. Relation Met by
-luccpl_metby <-
-  function(pattern_list1 = NULL,
-           pattern_list2 = NULL,
-           date1 = NULL,
-           date2 = NULL,
-           dates = NULL,
-           metadata = NULL) {
+luccpl_metby <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date2 = NULL, dates = NULL, metadata = NULL) {
     and_or <- NULL
-    ensurer::ensure_that(pattern_list1,!is.null(pattern_list1),
-                         err_desc = "pattern_list1, must be defined!")
-    ensurer::ensure_that(date1,!is.null(date1),
-                         err_desc = "date1, must be defined!")
-    ensurer::ensure_that(dates,!is.null(dates),
-                         err_desc = "dates, must be defined!")
-    ensurer::ensure_that(metadata,!is.null(metadata),
-                         err_desc = "metadata, must be defined!")
+    ensurer::ensure_that(pattern_list1, !is.null(pattern_list1), err_desc = "pattern_list1, must be defined!")
+    ensurer::ensure_that(date1, !is.null(date1), err_desc = "date1, must be defined!")
+    ensurer::ensure_that(dates, !is.null(dates), err_desc = "dates, must be defined!")
+    ensurer::ensure_that(metadata, !is.null(metadata), err_desc = "metadata, must be defined!")
     
-    if (length(pattern_list1) == 1)
-      and_or <- 0
+    if (length(pattern_list1) == 1) 
+        and_or <- 0
     if (length(pattern_list1) > 1) {
-      # or for all connections except the last
-      and_or[1:(length(pattern_list1))] <- 1
-      and_or[length(pattern_list1)] <- 0
+        # or for all connections except the last
+        and_or[1:(length(pattern_list1))] <- 1
+        and_or[length(pattern_list1)] <- 0
     }
     
     date1[1:length(pattern_list1)] <- date1
@@ -315,19 +254,12 @@ luccpl_metby <-
     
     query_array <- NULL
     for (i in 1:length(pattern_list1)) {
-      # for each pattern of land use a column is created in the query_array
-      query_array <-
-        c(query_array,
-          3,
-          time_step_number[i],
-          (length(dates) + 1),
-          pattern_number1[i],
-          0,
-          and_or[i])
+        # for each pattern of land use a column is created in the query_array
+        query_array <- c(query_array, 3, time_step_number[i], (length(dates) + 1), pattern_number1[i], 0, and_or[i])
     }
     
     return(query_array)
-  }
+}
 
 
 
@@ -359,31 +291,20 @@ luccpl_metby <-
 #'
 
 # 5. Relation Holds
-luccpl_holds <-
-  function(pattern_list1 = NULL,
-           pattern_list2 = NULL,
-           date1 = NULL,
-           date2 = NULL,
-           dates = NULL,
-           metadata = NULL) {
+luccpl_holds <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date2 = NULL, dates = NULL, metadata = NULL) {
     and_or <- NULL
-    ensurer::ensure_that(pattern_list1,!is.null(pattern_list1),
-                         err_desc = "pattern_list1, must be defined!")
-    ensurer::ensure_that(date1,!is.null(date1),
-                         err_desc = "date1, must be defined!")
-    ensurer::ensure_that(date2,!is.null(date2),
-                         err_desc = "date2, must be defined!")
-    ensurer::ensure_that(dates,!is.null(dates),
-                         err_desc = "dates, must be defined!")
-    ensurer::ensure_that(metadata,!is.null(metadata),
-                         err_desc = "metadata, must be defined!")
+    ensurer::ensure_that(pattern_list1, !is.null(pattern_list1), err_desc = "pattern_list1, must be defined!")
+    ensurer::ensure_that(date1, !is.null(date1), err_desc = "date1, must be defined!")
+    ensurer::ensure_that(date2, !is.null(date2), err_desc = "date2, must be defined!")
+    ensurer::ensure_that(dates, !is.null(dates), err_desc = "dates, must be defined!")
+    ensurer::ensure_that(metadata, !is.null(metadata), err_desc = "metadata, must be defined!")
     
-    if (length(pattern_list1) == 1)
-      and_or <- 0
+    if (length(pattern_list1) == 1) 
+        and_or <- 0
     if (length(pattern_list1) > 1) {
-      # or for all connections except the last
-      and_or[1:(length(pattern_list1))] <- 1
-      and_or[length(pattern_list1)] <- 0
+        # or for all connections except the last
+        and_or[1:(length(pattern_list1))] <- 1
+        and_or[length(pattern_list1)] <- 0
     }
     
     date1[1:length(pattern_list1)] <- date1
@@ -398,19 +319,12 @@ luccpl_holds <-
     
     query_array <- NULL
     for (i in 1:length(pattern_list1)) {
-      # for each pattern of land use a column is created in the query_array
-      query_array <-
-        c(query_array,
-          4,
-          time_step1[i],
-          time_step2[i],
-          pattern_number1[i],
-          0,
-          and_or[i])
+        # for each pattern of land use a column is created in the query_array
+        query_array <- c(query_array, 4, time_step1[i], time_step2[i], pattern_number1[i], 0, and_or[i])
     }
     
     return(query_array)
-  }
+}
 
 
 
@@ -442,31 +356,20 @@ luccpl_holds <-
 #'
 
 # 6. Relation During
-luccpl_during <-
-  function(pattern_list1 = NULL,
-           pattern_list2 = NULL,
-           date1 = NULL,
-           date2 = NULL,
-           dates = NULL,
-           metadata = NULL) {
+luccpl_during <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date2 = NULL, dates = NULL, metadata = NULL) {
     and_or <- NULL
-    ensurer::ensure_that(pattern_list1,!is.null(pattern_list1),
-                         err_desc = "pattern_list1, must be defined!")
-    ensurer::ensure_that(date1,!is.null(date1),
-                         err_desc = "date1, must be defined!")
-    ensurer::ensure_that(date2,!is.null(date2),
-                         err_desc = "date2, must be defined!")
-    ensurer::ensure_that(dates,!is.null(dates),
-                         err_desc = "dates, must be defined!")
-    ensurer::ensure_that(metadata,!is.null(metadata),
-                         err_desc = "metadata, must be defined!")
+    ensurer::ensure_that(pattern_list1, !is.null(pattern_list1), err_desc = "pattern_list1, must be defined!")
+    ensurer::ensure_that(date1, !is.null(date1), err_desc = "date1, must be defined!")
+    ensurer::ensure_that(date2, !is.null(date2), err_desc = "date2, must be defined!")
+    ensurer::ensure_that(dates, !is.null(dates), err_desc = "dates, must be defined!")
+    ensurer::ensure_that(metadata, !is.null(metadata), err_desc = "metadata, must be defined!")
     
-    if (length(pattern_list1) == 1)
-      and_or <- 0
+    if (length(pattern_list1) == 1) 
+        and_or <- 0
     if (length(pattern_list1) > 1) {
-      # or for all connections except the last
-      and_or[1:(length(pattern_list1))] <- 1
-      and_or[length(pattern_list1)] <- 0
+        # or for all connections except the last
+        and_or[1:(length(pattern_list1))] <- 1
+        and_or[length(pattern_list1)] <- 0
     }
     
     date1[1:length(pattern_list1)] <- date1
@@ -480,21 +383,12 @@ luccpl_during <-
     
     query_array <- NULL
     for (i in 1:length(pattern_list1)) {
-      # for each pattern of land use a column is created in the query_array
-      query_array <-
-        c(
-          query_array,
-          1,
-          time_step_number1[i],
-          time_step_number2[i],
-          pattern_number1[i],
-          0,
-          and_or[i]
-        )
+        # for each pattern of land use a column is created in the query_array
+        query_array <- c(query_array, 1, time_step_number1[i], time_step_number2[i], pattern_number1[i], 0, and_or[i])
     }
     
     return(query_array)
-  }
+}
 
 
 
@@ -526,29 +420,19 @@ luccpl_during <-
 #'
 
 # 7. Relation Recur
-luccpl_recur <-
-  function(pattern_list1 = NULL,
-           pattern_list2 = NULL,
-           date1 = NULL,
-           date2 = NULL,
-           dates = NULL,
-           metadata = NULL) {
+luccpl_recur <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date2 = NULL, dates = NULL, metadata = NULL) {
     and_or <- NULL
-    ensurer::ensure_that(pattern_list1,!is.null(pattern_list1),
-                         err_desc = "pattern_list1, must be defined!")
-    ensurer::ensure_that(date1,!is.null(date1),
-                         err_desc = "date1, must be defined!")
-    ensurer::ensure_that(dates,!is.null(dates),
-                         err_desc = "dates, must be defined!")
-    ensurer::ensure_that(metadata,!is.null(metadata),
-                         err_desc = "metadata, must be defined!")
+    ensurer::ensure_that(pattern_list1, !is.null(pattern_list1), err_desc = "pattern_list1, must be defined!")
+    ensurer::ensure_that(date1, !is.null(date1), err_desc = "date1, must be defined!")
+    ensurer::ensure_that(dates, !is.null(dates), err_desc = "dates, must be defined!")
+    ensurer::ensure_that(metadata, !is.null(metadata), err_desc = "metadata, must be defined!")
     
-    if (length(pattern_list1) == 1)
-      and_or <- 0
+    if (length(pattern_list1) == 1) 
+        and_or <- 0
     if (length(pattern_list1) > 1) {
-      # or for all connections except the last
-      and_or[1:(length(pattern_list1))] <- 1
-      and_or[length(pattern_list1)] <- 0
+        # or for all connections except the last
+        and_or[1:(length(pattern_list1))] <- 1
+        and_or[length(pattern_list1)] <- 0
     }
     
     date1[1:length(pattern_list1)] <- date1
@@ -564,19 +448,12 @@ luccpl_recur <-
     
     query_array <- NULL
     for (i in 1:length(pattern_list1)) {
-      # for each pattern of land use a column is created in the query_array
-      query_array <-
-        c(query_array,
-          5,
-          time_step1[i],
-          time_step2[i],
-          pattern_number1[i],
-          0,
-          and_or[i])
+        # for each pattern of land use a column is created in the query_array
+        query_array <- c(query_array, 5, time_step1[i], time_step2[i], pattern_number1[i], 0, and_or[i])
     }
     
     return(query_array)
-  }
+}
 
 
 
@@ -608,40 +485,25 @@ luccpl_recur <-
 #'
 
 # 8. Relation Convert
-luccpl_convert <-
-  function(pattern_list1 = NULL,
-           pattern_list2 = NULL,
-           date1 = NULL,
-           date2 = NULL,
-           dates = NULL,
-           metadata = NULL) {
+luccpl_convert <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date2 = NULL, dates = NULL, metadata = NULL) {
     and_or <- NULL
     
-    ensurer::ensure_that(pattern_list1,!is.null(pattern_list1),
-                         err_desc = "pattern_list1, must be defined!")
-    ensurer::ensure_that(pattern_list2,!is.null(pattern_list2),
-                         err_desc = "pattern_list2, must be defined!")
-    ensurer::ensure_that(date1,!is.null(date1),
-                         err_desc = "date1, must be defined!")
-    ensurer::ensure_that(date2,!is.null(date2),
-                         err_desc = "date2, must be defined!")
-    ensurer::ensure_that(dates,!is.null(dates),
-                         err_desc = "dates, must be defined!")
-    ensurer::ensure_that(metadata,!is.null(metadata),
-                         err_desc = "metadata, must be defined!")
+    ensurer::ensure_that(pattern_list1, !is.null(pattern_list1), err_desc = "pattern_list1, must be defined!")
+    ensurer::ensure_that(pattern_list2, !is.null(pattern_list2), err_desc = "pattern_list2, must be defined!")
+    ensurer::ensure_that(date1, !is.null(date1), err_desc = "date1, must be defined!")
+    ensurer::ensure_that(date2, !is.null(date2), err_desc = "date2, must be defined!")
+    ensurer::ensure_that(dates, !is.null(dates), err_desc = "dates, must be defined!")
+    ensurer::ensure_that(metadata, !is.null(metadata), err_desc = "metadata, must be defined!")
     
-    if (length(pattern_list1) == 1 &&
-        length(pattern_list2) == 1)
-      and_or <- 0
-    else {
-      # or for all connections except the last
-      and_or[1:(((length(pattern_list1)) * (length(pattern_list2))) - 1)] <-
-        1
-      and_or[((length(pattern_list1)) * (length(pattern_list2)))] <- 0
+    if (length(pattern_list1) == 1 && length(pattern_list2) == 1) 
+        and_or <- 0 else {
+        # or for all connections except the last
+        and_or[1:(((length(pattern_list1)) * (length(pattern_list2))) - 1)] <- 1
+        and_or[((length(pattern_list1)) * (length(pattern_list2)))] <- 0
     }
     
-    #date1[1:((length(pattern_list1))*(length(pattern_list2)))] <- date1
-    #date2[1:((length(pattern_list1))*(length(pattern_list2)))] <- date2
+    # date1[1:((length(pattern_list1))*(length(pattern_list2)))] <- date1 date2[1:((length(pattern_list1))*(length(pattern_list2)))] <-
+    # date2
     
     date1[1:length(pattern_list1)] <- date1
     date2[1:length(pattern_list2)] <- date2
@@ -657,24 +519,15 @@ luccpl_convert <-
     query_array <- NULL
     cont <- 0
     for (i in 1:length(pattern_list1)) {
-      for (j in 1:length(pattern_list2)) {
-        cont <- cont + 1
-        # for each pattern of land use a column is created in the query_array
-        query_array <-
-          c(
-            query_array,
-            6,
-            time_step1[i],
-            time_step2[i],
-            pattern_number1[i],
-            pattern_number2[j],
-            and_or[cont]
-          )
-      }
+        for (j in 1:length(pattern_list2)) {
+            cont <- cont + 1
+            # for each pattern of land use a column is created in the query_array
+            query_array <- c(query_array, 6, time_step1[i], time_step2[i], pattern_number1[i], pattern_number2[j], and_or[cont])
+        }
     }
     
     return(query_array)
-  }
+}
 
 
 
@@ -706,38 +559,23 @@ luccpl_convert <-
 #'
 
 # 9. Relation Evolve
-luccpl_evolve <-
-  function(pattern_list1 = NULL,
-           pattern_list2 = NULL,
-           date1 = NULL,
-           date2 = NULL,
-           dates = NULL,
-           metadata = NULL) {
+luccpl_evolve <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NULL, date2 = NULL, dates = NULL, metadata = NULL) {
     # date2 optional (ARRUMAR ISSO)
     and_or <- NULL
     
-    ensurer::ensure_that(pattern_list1,!is.null(pattern_list1),
-                         err_desc = "pattern_list1, must be defined!")
-    ensurer::ensure_that(pattern_list2,!is.null(pattern_list2),
-                         err_desc = "pattern_list2, must be defined!")
-    ensurer::ensure_that(date1,!is.null(date1),
-                         err_desc = "date1, must be defined!")
-    ensurer::ensure_that(date2,!is.null(date2),
-                         err_desc = "date2, must be defined!")
-    ensurer::ensure_that(dates,!is.null(dates),
-                         err_desc = "dates, must be defined!")
-    ensurer::ensure_that(metadata,!is.null(metadata),
-                         err_desc = "metadata, must be defined!")
+    ensurer::ensure_that(pattern_list1, !is.null(pattern_list1), err_desc = "pattern_list1, must be defined!")
+    ensurer::ensure_that(pattern_list2, !is.null(pattern_list2), err_desc = "pattern_list2, must be defined!")
+    ensurer::ensure_that(date1, !is.null(date1), err_desc = "date1, must be defined!")
+    ensurer::ensure_that(date2, !is.null(date2), err_desc = "date2, must be defined!")
+    ensurer::ensure_that(dates, !is.null(dates), err_desc = "dates, must be defined!")
+    ensurer::ensure_that(metadata, !is.null(metadata), err_desc = "metadata, must be defined!")
     
     
-    if (length(pattern_list1) == 1 &&
-        length(pattern_list2) == 1)
-      and_or <- 0
-    else {
-      # or for all connections except the last
-      and_or[1:((length(pattern_list1)) * (length(pattern_list2)))] <-
-        1
-      and_or[((length(pattern_list1)) * (length(pattern_list2)))] <- 0
+    if (length(pattern_list1) == 1 && length(pattern_list2) == 1) 
+        and_or <- 0 else {
+        # or for all connections except the last
+        and_or[1:((length(pattern_list1)) * (length(pattern_list2)))] <- 1
+        and_or[((length(pattern_list1)) * (length(pattern_list2)))] <- 0
     }
     
     
@@ -755,21 +593,12 @@ luccpl_evolve <-
     cont <- 0
     query_array <- NULL
     for (i in 1:length(pattern_list1)) {
-      for (j in 1:length(pattern_list2)) {
-        cont <- cont + 1
-        # for each pattern of land use a column is created in the query_array
-        query_array <-
-          c(
-            query_array,
-            7,
-            time_step1[i],
-            time_step2[j],
-            pattern_number1[i],
-            pattern_number2[j],
-            and_or[cont]
-          )
-      }
+        for (j in 1:length(pattern_list2)) {
+            cont <- cont + 1
+            # for each pattern of land use a column is created in the query_array
+            query_array <- c(query_array, 7, time_step1[i], time_step2[j], pattern_number1[i], pattern_number2[j], and_or[cont])
+        }
     }
     
     return(query_array)
-  }
+}
