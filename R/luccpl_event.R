@@ -36,7 +36,7 @@
 #'  containing the information to perform the queries in numerical form.
 #'
 #' @keywords datasets
-#' @return
+#' @return A Boolean data cube, with answers to the questions asked.
 #' @importFrom ensurer ensure_that
 #' @importFrom raster brick getValuesBlocknlayers setValues
 #' @importFrom parallel makeCluster detectCores parLapply stopCluster
