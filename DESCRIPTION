@@ -2,7 +2,8 @@ Package: LuccPL
 Title: Processing and analisys language for land use and cover changes
 Version: 1.0
 Authors@R: person("Carlos", "Romani", email = "car13romani@gmail.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Description: This package aims to perform a series of analyzes on spatio-temporal data on land use, in order 
+to assist in the observation of changes that occur over time.
 Depends: R (>= 3.6.2)
 License: GNU-3
 Encoding: UTF-8
