@@ -1,0 +1,38 @@
+---
+title: "LuccPL: Land Use Change Calculus Processing Language"
+author:
+- name: "Carlos Alexandre Romani"
+  affiliation: National Institute for Space Research (INPE), Brazil
+  email: car13romani@gmail.com
+bibliography: ../inst/extdata/markdown/references.bib
+output:
+  pdf_document: 
+    citation_package: natbib
+    keep_tex: true
+    fig_caption: true
+    latex_engine: pdflatex
+    template: ../inst/extdata/markdown/latex-ms.tex
+  html_document: 
+    df_print: paged
+abstract: This package aims to perform a series of analyzes on spatio-temporal data on land use, in order to assist in the observation of changes that occur over time.
+vignette: |
+  %\usepackage[utf8]{inputenc}
+  %\VignetteIndexEntry{LuccPL: Land Use Change Calculus Processing Language}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+
+# Introduction
+
+
+
+
+```{r}
+# load library
+library(LuccPL)
+```
+
+
+
+
+# References
