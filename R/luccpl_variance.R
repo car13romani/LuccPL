@@ -33,7 +33,7 @@
 #' @keywords datasets
 #' @return a single raster, the value of variance to each cell 
 #' 
-#' @importFrom raster brick getValuesBlocknlayers setValues hist
+#' @importFrom raster brick getValuesBlock nlayers setValues hist
 #' @importFrom parallel makeCluster detectCores parLapply stopCluster
 #' @export
 #'

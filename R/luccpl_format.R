@@ -33,7 +33,6 @@
 #' @keywords datasets
 #' @return A query_array to perform the query on luccpl_event function.
 #' 
-#' @export
 #'
 
 luccpl_query <- function(FUN_list) {
@@ -78,7 +77,6 @@ luccpl_query <- function(FUN_list) {
 #' @keywords datasets
 #' @return a list of digital numbers of classifications.
 #' 
-#' @export
 #'
 
 mdata <- function(pattern_list, metadata) {
@@ -111,7 +109,6 @@ mdata <- function(pattern_list, metadata) {
 #' @keywords datasets
 #' @return function to return the time-step for each data.
 #' 
-#' @export
 #'
 
 tdata <- function(date, dates) {
@@ -146,7 +143,6 @@ tdata <- function(date, dates) {
 #' @keywords datasets
 #' @return function to return 0 to 'and' and 1 to 'or'
 #' 
-#' @export
 #'
 
 and_or_bool <- function(connector_list, n_relations) {
@@ -184,7 +180,6 @@ and_or_bool <- function(connector_list, n_relations) {
 #' @keywords datasets
 #' @return formated patterns
 #' 
-#' @export
 #'
 
 format1 <- function(x) {

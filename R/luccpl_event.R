@@ -37,7 +37,7 @@
 #' @keywords datasets
 #' @return A Boolean data cube, with answers to the questions asked.
 #' @importFrom ensurer ensure_that
-#' @importFrom raster brick getValuesBlocknlayers setValues
+#' @importFrom raster brick getValuesBlock nlayers setValues
 #' @importFrom parallel makeCluster detectCores parLapply stopCluster
 #' @export
 #'

@@ -33,7 +33,7 @@
 #' @return A single layer raster with true in locations with true for locations with at least one true on the timeline
 #' 
 
-#' @importFrom raster brick getValuesBlocknlayers setValues
+#' @importFrom raster brick getValuesBlock nlayers setValues
 #' @importFrom parallel makeCluster detectCores parLapply stopCluster
 #' @export
 #'

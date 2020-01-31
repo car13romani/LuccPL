@@ -38,7 +38,6 @@
 #' @keywords datasets
 #' @return A query_array that can be grouped with others to perform the query
 #' @importFrom ensurer ensure_that
-#' @importFrom LuccPL mdata tdata
 #' @export
 #'
 
@@ -100,7 +99,6 @@ luccpl_before <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NU
 #' @keywords datasets
 #' @return A query_array that can be grouped with others to perform the query
 #' @importFrom ensurer ensure_that
-#' @importFrom LuccPL mdata tdata
 #' @export
 #'
 
@@ -162,7 +160,6 @@ luccpl_after <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NUL
 #' @keywords datasets
 #' @return A query_array that can be grouped with others to perform the query
 #' @importFrom ensurer ensure_that
-#' @importFrom LuccPL mdata tdata
 #' @export
 #'
 
@@ -224,7 +221,6 @@ luccpl_meets <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NUL
 #' @keywords datasets
 #' @return A query_array that can be grouped with others to perform the query
 #' @importFrom ensurer ensure_that
-#' @importFrom LuccPL mdata tdata
 #' @export
 #'
 
@@ -286,7 +282,6 @@ luccpl_metby <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NUL
 #' @keywords datasets
 #' @return A query_array that can be grouped with others to perform the query
 #' @importFrom ensurer ensure_that
-#' @importFrom LuccPL mdata tdata
 #' @export
 #'
 
@@ -351,7 +346,6 @@ luccpl_holds <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NUL
 #' @keywords datasets
 #' @return A query_array that can be grouped with others to perform the query
 #' @importFrom ensurer ensure_that
-#' @importFrom LuccPL mdata tdata
 #' @export
 #'
 
@@ -415,7 +409,6 @@ luccpl_during <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NU
 #' @keywords datasets
 #' @return A query_array that can be grouped with others to perform the query
 #' @importFrom ensurer ensure_that
-#' @importFrom LuccPL mdata tdata
 #' @export
 #'
 
@@ -480,7 +473,6 @@ luccpl_recur <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = NUL
 #' @keywords datasets
 #' @return A query_array that can be grouped with others to perform the query
 #' @importFrom ensurer ensure_that
-#' @importFrom LuccPL mdata tdata
 #' @export
 #'
 
@@ -554,7 +546,6 @@ luccpl_convert <- function(pattern_list1 = NULL, pattern_list2 = NULL, date1 = N
 #' @keywords datasets
 #' @return A query_array that can be grouped with others to perform the query
 #' @importFrom ensurer ensure_that
-#' @importFrom LuccPL mdata tdata
 #' @export
 #'
 

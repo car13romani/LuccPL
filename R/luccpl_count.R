@@ -43,7 +43,7 @@
 #'    the result of the sum of true values over time (only applicable to the query result raster_brick)
 #'  - for_time_step = TRUE, returns a table with the number of cells of each class and in each instant of time.
 #'    If applied to the rasterbrick result of the query, it returns a table with the true and false for each instant of time.
-#' @importFrom raster brick getValuesBlocknlayers setValues hist
+#' @importFrom raster brick getValuesBlock nlayers setValues hist
 #' @importFrom parallel makeCluster detectCores parLapply stopCluster
 #' @export
 #'
